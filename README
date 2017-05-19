@@ -1,0 +1,52 @@
+Note: This file defines some classes that we MIGHT need to implement for PA4. Some classes (ActorPath and ActorEdge, for instance), might not be necessary for our purpose if we can find a more efficient way to store edges and paths.
+
+1. main() {} in main.cpp, the program driver file. Handle all user input error checkings before creating a graph instance.
+
+2. ActorGraph class in ActorGraph.h and ActorGraph.cpp. 
+	- This class will serve as our main graph container class
+	- It should contain a "master node", or possibly a list (vector) of nodes and/or edges
+	- Edges maybe stored in a matrix (2D array) or as a list of vectors, or maybe stored in ActorNodes for 
+		easier traversals
+	- Include some functions that mainly delegate to node functions to support graph traversal
+
+3. ActorNode class in ActorNode.h and ActorNode.cpp
+	- This class will define the necessary member variables in a node instance
+		- Actor name
+		- Possibly list of movies he/she participated in
+		- Possibly list of ActorNode pointers, or possibly list of ActorEdges to which this node is connected to
+		- Possibly a list of ActorPath pointers that contain all the shortest paths to reach the other ActorNodes
+	- Include some helper functions to support graph traversal
+
+4. ActorEdge class in ActorEdge.h and ActorEdge.cpp
+	- This class will define the necessary member variables in an edge instance
+		- Weight
+		- ActorNode1 and ActorNode2 pointers
+	-Include some helper functions to support graph traversal
+
+5. ActorPath class in ActorPath.h and ActorPath.cpp
+	- This class will define the necessary member variables in a path instance
+		- totalWeight
+		- totalLength
+		- List of Edges for this traversal, should be in a specific order
+		- Pointer to the first ActorNode, and the last ActorNode
+
+6. MovieList class in MovieList.h and MovieList.cpp
+	- This class mainly delegate to MovieGraph class
+	- Create a hashtable (unordered_set) to store all pointers to unique MovieGraph instances using the Movie
+		name string.
+	- A function that adds an actor to a MovieGraph if it exists, or make a new MovieGraph if that movie is
+		not in the hashtable
+	- A function to make every MovieGraph instances generate the desired edges among the ActorNodes (this function
+		should only be called once at the end of the ActorGraph initialization function, and should traverse through
+		the hashtable with iterators and call a function in MovieGraph instances)
+	- Should be Destructed after the previous function is called.
+
+7. MovieGraph class in MovieGraph.h and MovieGraph.cpp
+	- This class will help in the construction of the ActorGraph instance. We will need to make a list of actors
+		who have participated in the same movie, then create a "complete graph" within that group of actors.
+		If an edge already existed between two actors, then increment the weight of that edge
+	- Contain a list of ActorNode pointers.
+	- A function to add ActorNode pointer(s)
+	- A function to generate a list of edges among the ActorNodes (this function should only be called one time
+		at the end of the ActorGraph initialization function). It should be able to modify the ActorNode class
+		member variable, or use a function to add edges/nodes to the list of edges/nodes in ActorNode class.
