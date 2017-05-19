@@ -24,3 +24,7 @@
 
 # TSV files
 *.tsv
+
+# txt files
+*.txt
+*.swp
