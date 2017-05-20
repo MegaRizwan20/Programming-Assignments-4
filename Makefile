@@ -32,7 +32,7 @@ ActorGraph.o: MovieName.h ActorNode.h ActorEdge.h ActorGraph.h ActorPath.h Movie
 
 ActorNode.o: ActorNode.h ActorEdge.h MovieName.h
 
-ActorEdge.o: ActorEdge.h MovieName.h
+ActorEdge.o: ActorEdge.h ActorNode.h MovieName.h
 
 ActorPath.o: ActorPath.h ActorEdge.h ActorNode.h MovieName.h
 
