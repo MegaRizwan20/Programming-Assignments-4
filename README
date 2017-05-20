@@ -28,13 +28,15 @@ Some classes (ActorPath and ActorEdge, for instance), might not be necessary for
 	-Include some helper functions to support graph traversal
     -Include some comparator functions for sorting/finding
 
-5. ActorPath class in ActorPath.h and ActorPath.cpp
+5. ActorPath class in ActorPath.h and ActorPath.cpp (Most Likely Unnecessary for storing, but can be useful for
+		printing out the line of output)
 	- This class will define the necessary member variables in a path instance
 		- totalWeight (optional for checkpoint)
 		- totalLength (optional for final)
 		- List of Edges for this traversal, should be in a specific order (optional, depending on whether
             or not we are expected to actually store the path after constructing the graph)
-		- Pointer to the first ActorNode (this is optional), and the last ActorNode (this is not optional)
+		- Pointer to the first ActorNode (this is optional), and the last ActorNode (this is optional too)
+	- This class will define a function for printing out the path out to the user
 
 6. MovieList class in MovieList.h and MovieList.cpp
 	- This class mainly delegate to MovieGraph class
