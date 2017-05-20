@@ -20,7 +20,7 @@ all: pathfinder
 
 # include what ever source code *.h files pathfinder relies on (these are merely the ones that were used in the solution)
 
-pathfinder: ActorGraph.o
+pathfinder: ActorGraph.o ActorNode.o ActorEdge.o ActorPath.o MovieList.o MovieGraph.o MovieName.o
 
 
 
@@ -28,8 +28,19 @@ pathfinder: ActorGraph.o
 
 # Note: you do not have to include a *.cpp file if it aleady has a paired *.h file that is already included with class/method headers
 
-ActorGraph.o: MovieName.h ActorNode.h ActorEdge.h ActorGraph.h
+ActorGraph.o: MovieName.h ActorNode.h ActorEdge.h ActorGraph.h ActorPath.h MovieList.h MovieGraph.h MovieName.h
 
+ActorNode.o: ActorNode.h ActorEdge.h MovieName.h
+
+ActorEdge.o: ActorEdge.h MovieName.h
+
+ActorPath.o: ActorPath.h ActorEdge.h ActorNode.h MovieName.h
+
+MovieList.o: MovieList.h MovieGraph.h MovieName.h ActorNode.h ActorEdge.h
+
+MovieGraph.o: MovieGraph.h MovieName.h ActorNode.h ActorEdge.h
+
+MovieName.o: MovieName.h
 
 clean:
 	rm -f pathfinder *.o core*
