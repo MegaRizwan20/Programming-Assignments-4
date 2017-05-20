@@ -20,7 +20,7 @@ all: pathfinder
 
 # include what ever source code *.h files pathfinder relies on (these are merely the ones that were used in the solution)
 
-pathfinder: ActorGraph.o ActorNode.o ActorEdge.o ActorPath.o MovieList.o MovieGraph.o MovieName.o
+pathfinder: pathfinder.cpp ActorGraph.o ActorNode.o ActorEdge.o ActorPath.o MovieList.o MovieGraph.o MovieName.o
 
 
 

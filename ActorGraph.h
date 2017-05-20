@@ -11,6 +11,7 @@
 #define ACTORGRAPH_H
 
 #include <iostream>
+#include <fstream>
 
 // Maybe include some data structures here
 
