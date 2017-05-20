@@ -1,18 +1,21 @@
-Note: This file defines some classes that we MIGHT need to implement for PA4. Some classes (ActorPath and ActorEdge, for instance), might not be necessary for our purpose if we can find a more efficient way to store edges and paths.
+Note1: View this without WordWrap for better readability
+Note2: This file defines some classes that we MIGHT need to implement for PA4.
+Some classes (ActorPath and ActorEdge, for instance), might not be necessary for our purpose if we can find a more efficient
+    way to store edges and paths.
 
 1. main() {} in main.cpp, the program driver file. Handle all user input error checkings before creating a graph instance.
 
 2. ActorGraph class in ActorGraph.h and ActorGraph.cpp. 
 	- This class will serve as our main graph container class
 	- It should contain a "master node", or possibly a list (vector) of nodes and/or edges
-	- Edges maybe stored in a matrix (2D array) or as a list of vectors, or maybe stored in ActorNodes for 
+	- Edges maybe stored in a matrix (2D array) or as a list of vectors, or maybe stored in ActorNodes for
 		easier traversals
 	- Include some functions that mainly delegate to node functions to support graph traversal
 
 3. ActorNode class in ActorNode.h and ActorNode.cpp
 	- This class will define the necessary member variables in a node instance
 		- Actor name
-		- Possibly list of movies he/she participated in
+		- Possibly list of movies he/she participated in (completely optional/unnecessary)
 		- Possibly list of ActorNode pointers, or possibly list of ActorEdges to which this node is connected to
 		- Possibly a list of ActorPath pointers that contain all the shortest paths to reach the other ActorNodes
 	- Include some helper functions to support graph traversal
@@ -20,15 +23,17 @@ Note: This file defines some classes that we MIGHT need to implement for PA4. So
 4. ActorEdge class in ActorEdge.h and ActorEdge.cpp
 	- This class will define the necessary member variables in an edge instance
 		- Weight
-		- ActorNode1 and ActorNode2 pointers
+		- ActorNode pointer (that points to the other node)
 	-Include some helper functions to support graph traversal
+    -Include some comparator functions for sorting/finding
 
 5. ActorPath class in ActorPath.h and ActorPath.cpp
 	- This class will define the necessary member variables in a path instance
-		- totalWeight
-		- totalLength
-		- List of Edges for this traversal, should be in a specific order
-		- Pointer to the first ActorNode, and the last ActorNode
+		- totalWeight (optional for checkpoint)
+		- totalLength (optional for final)
+		- List of Edges for this traversal, should be in a specific order (optional, depending on whether
+            or not we are expected to actually store the path after constructing the graph)
+		- Pointer to the first ActorNode (this is optional), and the last ActorNode (this is not optional)
 
 6. MovieList class in MovieList.h and MovieList.cpp
 	- This class mainly delegate to MovieGraph class
@@ -36,7 +41,7 @@ Note: This file defines some classes that we MIGHT need to implement for PA4. So
 		name string.
 	- A function that adds an actor to a MovieGraph if it exists, or make a new MovieGraph if that movie is
 		not in the hashtable
-	- A function to make every MovieGraph instances generate the desired edges among the ActorNodes (this function
+	- A function to make every MovieGraph instances generate the desired edges among the ActorNodes (this function 
 		should only be called once at the end of the ActorGraph initialization function, and should traverse through
 		the hashtable with iterators and call a function in MovieGraph instances)
 	- Should be Destructed after the previous function is called.
