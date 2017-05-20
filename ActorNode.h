@@ -3,8 +3,8 @@
  * Author: <YOUR NAME HERE>
  * Date:   <DATE HERE>
  *
- * This file is meant to exist as a container for starter code that you can use to read the input file format
- * defined in movie_casts.tsv. Feel free to modify any/all aspects as you wish.
+ * This class is meant to be used to generate a node instance in the graph. 
+ * Contains some useful methods and variables for graph traversal.
  */
 
 #ifndef ACTORNODE_H
@@ -13,6 +13,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+   
+#include "ActorEdge.h"
+#include "MovieName.h"
    
 class ActorNode{
    
