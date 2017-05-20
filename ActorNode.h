@@ -13,6 +13,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <limits.h>
    
 #include "ActorEdge.h"
 #include "MovieName.h"
@@ -46,7 +47,7 @@ public:
     std::vector< ActorNode * > getAdjacentNodes() const;
    
     // Some member variables that can be used in a Dijkstra's algorithm
-    int dist;
+    unsigned int dist;
     ActorNode * prev;
     bool done;
    
