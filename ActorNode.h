@@ -42,6 +42,9 @@ public:
     // Return the actor edges by value (not reference, so no change can be done)
     std::vector< ActorEdge * > getEdges() const;
    
+    // Return the list of neighbour nodes
+    std::vector< ActorNode * > getAdjacentNodes() const;
+   
     // Some member variables that can be used in a Dijkstra's algorithm
     int dist;
     ActorNode * prev;
