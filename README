@@ -1,4 +1,4 @@
-Note1: View this without WordWrap for better readability
+Note1: View this without WordWrap in vim/gvim (wide window) for better readability
 Note2: This file defines some classes that we MIGHT need to implement for PA4.
 Some classes (ActorPath and ActorEdge, for instance), might not be necessary for our purpose if we can find a more efficient
     way to store edges and paths.
