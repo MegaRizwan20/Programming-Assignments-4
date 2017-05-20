@@ -28,6 +28,13 @@ class MovieName
 {
   public:
   
+    // The constructor
+    MovieName(string movieName, int year);
+
+    // The destructor
+    ~MovieName();
+
+
     /**
      * Used to get the name of the movie. Hoping to pass the name of 
      * the movie by doing a pass by reference. Should store the name of
