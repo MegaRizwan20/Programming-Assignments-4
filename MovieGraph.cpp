@@ -9,7 +9,7 @@ void MovieGraph::makeEdges() {
        {
          if (i != j)
          {
-           listOfActors[i].addEdge(listOfActors[j], name);
+           listOfActors[i]->addEdge(listOfActors[j], name);
          }
        }
      }

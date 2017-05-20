@@ -34,7 +34,7 @@ class MovieGraph
    // The constructor
    MovieGraph(string movieNames, int year);
    // The destructor
-   ~MovieName();
+   ~MovieGraph();
 
 
    /**

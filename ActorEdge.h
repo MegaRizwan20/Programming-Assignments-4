@@ -17,6 +17,8 @@
 #include "ActorNode.h"
 #include "MovieName.h"
    
+class ActorNode;
+   
 class ActorEdge{
    
 public:
