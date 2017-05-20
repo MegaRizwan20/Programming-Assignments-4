@@ -28,8 +28,8 @@ public:
     // Destructor, probably need to deallocate edges if its allocated on the heap
     ~ActorNode();
    
-    // Add an edge to the node
-	void addEdge( ActorEdge * edge );
+    // Add an edge to the node. Make the edge in this function
+	void addEdge( ActorNode * node, MovieName * name );
 
    	// Find an edge that connects to a neighbour with this name. If no neighbour with this name exist, return nullptr.
     ActorEdge * findEdge( std::string name ) const;
