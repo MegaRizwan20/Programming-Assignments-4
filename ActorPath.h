@@ -1,5 +1,5 @@
 /*
- * ActorNode.h
+ * ActorPath.h
  * Author: <YOUR NAME HERE>
  * Date:   <DATE HERE>
  *
@@ -23,6 +23,12 @@ class ActorPath{
    
 public:
     
+    // Constructor: start with a starting node
+    ActorPath(ActorNode * start);
+   
+    // Destructor: deallocate nothing
+    ~ActorPath();
+   
     // add an edge to the list to extend the path
     void addEdge( ActorEdge * edge );
    

@@ -1,5 +1,5 @@
 /*
- * ActorNode.h
+ * ActorEdge.h
  * Author: <YOUR NAME HERE>
  * Date:   <DATE HERE>
  *
@@ -12,7 +12,7 @@
 
 #include <iostream>
 #include <string>
-#include <priority_queue>
+#include <vector>
    
 #include "ActorNode.h"
 #include "MovieName.h"
