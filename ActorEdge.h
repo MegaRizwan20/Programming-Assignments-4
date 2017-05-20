@@ -17,15 +17,6 @@
 #include "ActorNode.h"
 #include "MovieName.h"
    
-   
-class MovieNameComparator{
-
-public:
-   
-	bool greaterMovieWeight( const MovieName * movie1, const MovieName * movie2 ) const;   
-   
-};   
-   
 class ActorEdge{
    
 public:
@@ -45,7 +36,9 @@ public:
     // get the actor node of the next node
     ActorNode * getNextNode() const;
    
-    // add a MovieName to the queue
+    // Add a MovieName to the vector, and if the MovieName is not null,
+   	// compare the MovieName instances and keep only the one with smaller 
+    // weight (essentially the one with more recent year)
     bool addMovie( MovieName * movie );
    
     // get the weight of the edge
@@ -53,8 +46,8 @@ public:
    
 private:   
     
-    // Store a list of movie names
-	std::priority_queue< MovieName * > movieList;
+    // Store the movie with the least weight
+	MovieName *  movie;
    
     // Store the node that this edge is pointing to
     ActorNode * nextNode;
