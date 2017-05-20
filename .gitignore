@@ -23,10 +23,8 @@
 *.lib
 
 # TSV files
-<<<<<<< HEAD
 *.tsv
 
 # txt files
 *.txt
 *.swp
->>>>>>> 3a984d0221dcba47acd57f9bd64e70c3370033f9
