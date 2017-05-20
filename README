@@ -3,7 +3,7 @@ Note2: This file defines some classes that we MIGHT need to implement for PA4.
 Some classes (ActorPath and ActorEdge, for instance), might not be necessary for our purpose if we can find a more efficient
     way to store edges and paths.
 
-1. pathfinder() {} in pathfinder.cpp, the program driver file. Handle all user input error checkings before creating a graph instance.
+1. main() {} in pathfinder.cpp, the program driver file. Handle all user input error checkings before creating a graph instance.
 
 2. ActorGraph class in ActorGraph.h and ActorGraph.cpp. 
 	- This class will serve as our main graph container class
