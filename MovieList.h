@@ -37,8 +37,12 @@ public:
     // Make all the MovieGraphs to start making edges
    	void makeAllEdges ();
    
+    // Return a list of all the movie name pointers so we can deallocate them later
+    std::vector<MovieName *> getAllMovieNames() const;
+   
 private:   
    
+    // Pass this class into the listOfGraphs template parameters for comparison
     class compareGraphs {
    	
     public:	

@@ -16,16 +16,13 @@
 
 using namespace std;
 
-/*class MovieNameComparator
-{
-  public:
-    bool operator()(const MovieName* movie1, const MovieName* movie2) const{
-      //
-    }
-};
-*/
 class MovieName
 {
+  private:
+  
+  	int year;
+  	std::string movieName;
+  
   public:
   
     // The constructor
@@ -40,14 +37,14 @@ class MovieName
      * the movie by doing a pass by reference. Should store the name of
      * the movie within a string. 
      */
-    void nameOfMovie(string& movieName) const;
+    void getName(string& movieName) const;
 
     /**
      * Used to get the year of the movie. Should do a pass by reference of
      * the year of the movie. Should store the year of the movie within
      * an integer.
      */
-    void yearOfMovie(int& year) const;
+    void getYear(int& year) const;
 
     /**
      * Gets the weight of the movie by doing weight = 1 + (2015 -Y). Returns
