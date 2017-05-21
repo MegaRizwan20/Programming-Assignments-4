@@ -29,15 +29,15 @@ public:
     ~MovieList();
    
     // Add an actorNode to one of the graphs
-   	void addActorNode( ActorNode * node, std::string movieName, int movieYear );
+    void addActorNode( ActorNode * node, std::string movieName, int movieYear );
    
-	// Find the moviegraph that contains this movie. Return null if does not exist   
+    // Find the moviegraph that contains this movie. Return null if does not exist   
     // We will need to create an empty MovieGraph instance, and search using set's
     // find function.
     MovieGraph * searchGraph( std::string movieName, int movieYear ) const;
    
-    // Make all the MovieGraphs to start making edges
-   	void makeAllEdges ();
+    // Make all the MovieGraphs to start making edges 
+    void makeAllEdges ();
    
     // Return a list of all the movie name pointers so we can deallocate them later
     std::vector<MovieName *> getAllMovieNames() const;
@@ -46,19 +46,17 @@ private:
    
     // Pass this class into the listOfGraphs template parameters for comparison
     class compareGraphs {
-   	
     public:	
         bool operator () ( const MovieGraph *& lhs, const MovieGraph *& rhs ) const
-   	    {
-			std::string sl = lhs->getMovieName();
-   			sl += std::to_string(lhs->getMovieYear());
+   	{
+	    std::string sl = lhs->getMovieName();
+   	    sl += std::to_string(lhs->getMovieYear());
    
-			std::string sr = rhs->getMovieName();
-   			sr += std::to_string(rhs->getMovieYear());
+	    std::string sr = rhs->getMovieName();
+   	    sr += std::to_string(rhs->getMovieYear());
    
-   			return (sl.compare(sr)) < 0;
+   	    return (sl.compare(sr)) < 0;
         }
-   
     };
    
     // store the list of moviegraphs
