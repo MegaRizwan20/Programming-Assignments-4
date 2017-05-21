@@ -32,6 +32,8 @@ public:
    	void addActorNode( ActorNode * node, std::string movieName, int movieYear );
    
 	// Find the moviegraph that contains this movie. Return null if does not exist   
+    // We will need to create an empty MovieGraph instance, and search using set's
+    // find function.
     MovieGraph * searchGraph( std::string movieName, int movieYear ) const;
    
     // Make all the MovieGraphs to start making edges
