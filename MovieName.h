@@ -26,7 +26,7 @@ class MovieName
   public:
   
     // The constructor
-    MovieName(string movieName, int year);
+    MovieName(string p_movieName, int p_year);
 
     // The destructor
     ~MovieName();
@@ -37,18 +37,18 @@ class MovieName
      * the movie by doing a pass by reference. Should store the name of
      * the movie within a string. 
      */
-    void getName(string& movieName) const;
+    void getName(string& g_movieName) const;
 
     /**
      * Used to get the year of the movie. Should do a pass by reference of
      * the year of the movie. Should store the year of the movie within
      * an integer.
      */
-    void getYear(int& year) const;
+    void getYear(int& g_year) const;
 
     /**
-     * Gets the weight of the movie by doing weight = 1 + (2015 -Y). Returns
-     * the weight of the movie 
+     * Gets the weight of the movie by doing weight = 1 + (2015 -Year). 
+     * Returns the weight of the movie 
      */
     int getWeight() const;
 
@@ -56,7 +56,7 @@ class MovieName
      * Comparing the movie name that we get to another movie name and seeing
      * which one is greater.
      */
-    bool operator> (const MovieName& movie) const;
+    //bool operator> (const MovieName& movie) const;
 
 
     // ALL OTHER NECESSARY HELPER FUNCTIONS BELOW HERE
