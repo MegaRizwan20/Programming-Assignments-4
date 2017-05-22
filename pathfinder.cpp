@@ -18,11 +18,11 @@ int main()
     ActorGraph graph;
     const static bool weight = false;
     std::cout << "Loading from file, this might take a while..." << flush;
-    graph.loadFromFile( "movie_casts.tsv", weight );
+    graph.loadFromFile( "test_file", weight );
     std::cout << "done!" << std::endl;
     graph.printStats(std::cout);
 
-    ActorPath * path = graph.findPath( "BACON, KEVIN (I)", "GIAMATTI, PAUL" );
+    ActorPath * path = graph.findPath( "A4", "A1" );
 	if (path == nullptr)
     {
       cout << "PATH NOT FOUND!!" << endl;

@@ -48,6 +48,9 @@ public:
     // Return the list of neighbour nodes
     std::vector< std::pair<ActorNode *, int> > getAdjacentNodes(bool weighted = false) const;
    
+   	// Return the number of edges this node is connected to
+   	int getNumEdges() const;
+   
     // Some member variables that can be used in a Dijkstra's algorithm
     int dist;
     ActorNode * prev;

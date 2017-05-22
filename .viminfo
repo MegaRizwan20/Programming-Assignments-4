@@ -9,6 +9,7 @@
 ~H
 # Command Line History (newest to oldest):
 :wq
+:w
 
 # Search String History (newest to oldest):
 
@@ -21,13 +22,26 @@
 # Registers:
 
 # File marks:
-'0  23  26  ~/Makefile
+'0  9  7  ~/test_file
+'1  23  26  ~/Makefile
 
 # Jumplist (newest first):
+-'  9  7  ~/test_file
+-'  1  0  ~/test_file
+-'  23  26  ~/Makefile
+-'  1  0  ~/Makefile
 -'  23  26  ~/Makefile
 -'  1  0  ~/Makefile
 
 # History of marks within files (newest to oldest):
+
+> ~/test_file
+	"	9	7
+	^	12	8
+	.	12	7
+	+	1	8
+	+	9	8
+	+	12	7
 
 > ~/Makefile
 	"	23	26

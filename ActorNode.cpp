@@ -26,6 +26,11 @@ ActorNode::~ActorNode()
     }
 }
 
+int ActorNode::getNumEdges() const
+{
+	return edges.size();
+}
+
 // Add an edge to the node. Make the edge in this function
 // If the edge already exist, just add the moviename to it
 void ActorNode::addEdge( ActorNode * node, MovieName * name )

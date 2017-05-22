@@ -33,6 +33,16 @@ void ActorGraph::printStats( ostream& out ) const
 {
     out << "#nodes: " << allNodes.size() << std::endl;
     out << "#movies: " << allMovies.size() << std::endl;
+  	int sum = 0;
+    for (auto it = allNodes.begin(); it != allNodes.end(); it++)
+    {
+      sum += (*it)->getNumEdges();
+    }
+  	
+  	// uncomment if you want to get the number of undirected edges
+  	//sum /= 2;
+  
+  	out << "#edges: " << sum << std::endl;
 }
 
 // This function will initialize the graph, along with all the nodes, edges and movienames
