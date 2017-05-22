@@ -6,23 +6,38 @@
  * This file is meant to exist as a container for starter code that you can use to read the input file format
  * defined in movie_casts.tsv. Feel free to modify any/all aspects as you wish.
  */
- 
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
+
 #include "ActorGraph.h"
 
 using namespace std;
 
-ActorGraph::ActorGraph(void) {}
+ActorGraph::ActorGraph(void) 
+{
+    allNodes = set< ActorNode *, compareNodes >();
+}
 
-bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) {
+ActorGraph::~ActorGraph() 
+{
+    for (int i = 0; i < allMovies.size(); i++)
+    {
+        delete allMovies[i];
+    }
+
+    for (auto it = allNodes.begin(); it != allNodes.end(); it++)
+    {
+        delete *it;
+    }
+}
+
+// This function will initialize the graph, along with all the nodes, edges and movienames
+bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
+{
     // Initialize the file stream
     ifstream infile(in_filename);
 
     bool have_header = false;
+
+    MovieList movieList;
   
     // keep reading lines until the end of file is reached
     while (infile) {
@@ -58,7 +73,23 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
         string movie_title(record[1]);
         int movie_year = stoi(record[2]);
     
-        // we have an actor/movie relationship, now what?
+        // we have an actor/movie relationship, now see if actor already exists
+        ActorNode * tempNode = new ActorNode(actor_name);
+        std::set<ActorNode *, compareNodes>::iterator it = allNodes.find( tempNode );
+
+        // if it does not exist
+        if (it == allNodes.end() )
+        {
+            allNodes.insert( tempNode );
+        }
+        // else if it exists
+        else
+        {
+            delete tempNode;
+            tempNode = *it;
+        }
+
+        movieList.addActorNode( tempNode, movie_title, movie_year );
     }
 
     if (!infile.eof()) {
@@ -67,5 +98,35 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
     }
     infile.close();
 
+    // Initialize all edges, and other member variables of the graph
+    movieList.makeAllEdges();
+    allMovies = movieList.getAllMovieNames();
+    weighted = use_weighted_edges;
+
     return true;
+}
+
+// This function returns a pointer to a heap-allocated ActorPath instance
+// Depending on the implementation of this class, the caller might have
+// to manually deallocate the returned pointer to prevent leaks.
+// Return null if the start_name or end_name is not in the graph
+ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name ) const
+{
+    ActorNode temp_start(start_name);
+    ActorNode temp_end(end_name);
+    auto it_start = allNodes.find( &temp_start );
+    auto it_end = allNodes.find( &temp_end );
+
+    if (it_start == allNodes.end() || it_end == allNodes.end())
+    {
+        return nullptr;
+    }
+
+    ActorNode * start = *it_start;
+    ActorNode * end = *it_end;
+    ActorPath * ret = new ActorPath(start);
+
+    // Path is already complete if the start and end nodes are the same
+    if (start == end) return ret;
+
 }

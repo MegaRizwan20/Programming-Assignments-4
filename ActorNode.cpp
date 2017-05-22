@@ -86,16 +86,32 @@ std::string ActorNode::getActorName( ) const
     return name;
 }
 
-// Return the list of neighbour nodes
-std::vector< std::pair<ActorNode *, int> > ActorNode::getAdjacentNodes() const
+// Return the list of neighbour nodes and the weights of these edges
+std::vector< std::pair<ActorNode *, int> > ActorNode::getAdjacentNodes(bool weighted /*= false*/) const
 {
+   
     std::vector< std::pair<ActorNode *, int> > list;
-    for (std::set<ActorEdge *, compareEdges>::iterator it = edges.begin();
-         it != edges.end(); ++it)
+    
+    // If we are dealing with weighted edges
+    if (weighted)
     {
-        ActorNode * tempNode = (*it)->getNextNode();
-        int weight = (*it)->getWeight();
-        list.push_back( std::make_pair(tempNode, weight) );
+        for (std::set<ActorEdge *, compareEdges>::iterator it = edges.begin();
+                it != edges.end(); ++it)
+        {
+            ActorNode * tempNode = (*it)->getNextNode();
+            int weight = (*it)->getWeight();
+            list.push_back( std::make_pair(tempNode, weight) );
+        }
+    }
+    else
+    {
+        for (std::set<ActorEdge *, compareEdges>::iterator it = edges.begin();
+                it != edges.end(); ++it)
+        {
+            ActorNode * tempNode = (*it)->getNextNode();
+            list.push_back( std::make_pair(tempNode, 1) );
+        }
+
     }
 
     return list;

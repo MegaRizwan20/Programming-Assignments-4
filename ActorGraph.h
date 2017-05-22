@@ -12,18 +12,56 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <utility>
+#include <set>
+
+#include "ActorNode.h"
+#include "ActorEdge.h"
+#include "ActorPath.h"
+#include "MovieList.h"
+#include "MovieName.h"
+#include "MovieGraph.h"
 
 // Maybe include some data structures here
 
 using namespace std;
 
+class compareNodes {
+public:
+    bool operator() ( ActorNode * const lhs, ActorNode * const rhs )
+    {
+        return (lhs->getActorName()).compare(rhs->getActorName()) < 0;
+    }
+};
+
+class comparePaths {
+public:
+    bool operator() ( ActorPath lhs, ActorPath rhs )
+    {
+        return lhs.getEndNode() < rhs.getEndNode();
+    }
+};
+
 class ActorGraph {
 protected:
   
     // Maybe add class data structure(s) here
+    bool weighted;
+
+    // This defines a set of pairs, each containing a node (the starting node) and the set of
+    // found paths.
+    std::set< ActorNode *, compareNodes> allNodes;
+
+    // Stores the list of pointers of all MovieName instances constructed. This is to ensure that
+    // the MovieName instances get deleted once and once only
+    std::vector< MovieName *> allMovies;
 
 public:
     ActorGraph(void);
+    ~ActorGraph();
 
     // Maybe add some more methods here
   
@@ -37,6 +75,9 @@ public:
      * return true if file was loaded sucessfully, false otherwise
      */
     bool loadFromFile(const char* in_filename, bool use_weighted_edges);
+
+    // Find the shortest path from the starting node and ends up at the ending node
+    ActorPath * findPath( std::string start_name, std::string end_name ) const;
   
 };
 

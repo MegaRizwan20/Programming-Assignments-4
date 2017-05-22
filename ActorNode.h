@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <utility>
 #include <limits.h>
    
 #include "ActorEdge.h"
@@ -43,12 +44,13 @@ public:
    	std::string getActorName( ) const;
     
     // Return the list of neighbour nodes
-    std::vector< std::pair<ActorNode *, int> > getAdjacentNodes() const;
+    std::vector< std::pair<ActorNode *, int> > getAdjacentNodes(bool weighted = false) const;
    
     // Some member variables that can be used in a Dijkstra's algorithm
     unsigned int dist;
     ActorNode * prev;
     bool done;
+    ActorPath * path;
    
 private:   
     class compareEdges {

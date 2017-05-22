@@ -13,6 +13,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <queue>
    
 #include "ActorNode.h"
 #include "ActorEdge.h"
@@ -40,6 +41,9 @@ public:
    
     // return the start node
     ActorNode * getStartNode() const;
+
+    // return the edges
+    std::vector<ActorEdge *> getEdges() const;
    
     // return the end node
     ActorNode * getEndNode() const;
@@ -58,7 +62,7 @@ private:
 	ActorNode * start;
    
     // the list of edges that will eventually bring us to the end node
-    vector<ActorEdge *> linkedEdges;
+    std::vector<ActorEdge *> linkedEdges;
    
 };
 
