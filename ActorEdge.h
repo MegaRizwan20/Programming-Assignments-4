@@ -23,7 +23,7 @@ class ActorEdge{
 public:
    
     // Constructor: make an edge that points to the input node
-    ActorEdge(ActorNode * node);
+    ActorEdge(ActorNode * node, MovieName * name);
    
    	// Destructor: do not deallocate anything here
     ~ActorEdge();

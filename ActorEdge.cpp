@@ -10,9 +10,9 @@
 #include "ActorEdge.h"
 
 // Constructor: make an edge that points to the input node
-ActorEdge::ActorEdge(ActorNode * node)
+ActorEdge::ActorEdge(ActorNode * node, MovieName * name)
 {
-    movie = nullptr;
+    movie = name;
     nextNode = node;
 }
 
@@ -53,7 +53,6 @@ bool ActorEdge::addMovie( MovieName * new_movie )
 
     if (movie->getWeight() > new_movie->getWeight())
     {
-
         movie = new_movie;
         return true;
     }

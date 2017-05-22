@@ -125,20 +125,24 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
     int weight;
     auto it_start = allNodes.find( start );
     auto it_end = allNodes.find( end );
-
-    if (it_start == allNodes.end() || it_end == allNodes.end())
-    {
-        return nullptr;
-    }
-    
     delete start;
     delete end;
+  
+    if (it_start == allNodes.end() || it_end == allNodes.end())
+    {
+      	cout << "Actor node is not found!" << endl;
+        return nullptr;
+    }
+
     start = *it_start;
     end = *it_end;
     ActorPath * ret = new ActorPath(start);
 
     // Path is already complete if the start and end nodes are the same
-    if (start == end) return ret;
+    if (start == end) 
+    {
+      return ret;
+    }
 
     // Use the Dijkstra algorithm to find the path
     std::priority_queue< std::pair<int, ActorNode *>, std::vector<std::pair<int, ActorNode *>>, compareInQueue > queue;

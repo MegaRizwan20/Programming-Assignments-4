@@ -30,7 +30,7 @@ ActorNode::~ActorNode()
 // If the edge already exist, just add the moviename to it
 void ActorNode::addEdge( ActorNode * node, MovieName * name )
 {
-    ActorEdge temp( node );
+    ActorEdge temp( node, nullptr );
     ActorEdge * temp2;
 
     // Search to see if the edge already exist between the nodes
@@ -39,23 +39,23 @@ void ActorNode::addEdge( ActorNode * node, MovieName * name )
     // If the edge does not exist
     if (it == edges.end())
     {
-        ActorEdge * temp2 = new ActorEdge(node);
+        ActorEdge * temp2 = new ActorEdge(node, name);
         edges.insert( temp2 );
     }
     else
     {
         temp2 = *it;
+      	// Add the moviename to the edge
+    	temp2->addMovie( name );
     }
     
-    // Add the moviename to the edge
-    temp2->addMovie( name );
 }
 
 // Find an edge that connects to a neighbour with this name. If no neighbour with this name exist, return nullptr.
 ActorEdge * ActorNode::findEdge( std::string name ) const
 {
     ActorNode node(name);
-    ActorEdge temp(&node);
+    ActorEdge temp(&node, nullptr);
     std::set<ActorEdge *, compareEdges>::iterator it = edges.find( &temp );
 
     // If the edge does not exist
