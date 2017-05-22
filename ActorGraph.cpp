@@ -193,6 +193,13 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
         // found the path to the end. stop.
         if (v == end) break;
     }
+  
+  
+  	if (v != end)
+    {
+      delete ret;
+      return nullptr;
+    }
 
     // time to construct the path
     std::stack<ActorNode *> stack;

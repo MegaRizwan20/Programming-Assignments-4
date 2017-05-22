@@ -30,7 +30,17 @@ void ActorPath::addEdge( ActorEdge * edge )
 // print the path to the user
 void ActorPath::printPath( ostream& out ) const
 {
-
+    std::vector<ActorEdge *> edges = getEdges();
+    out << getStartNode()->getActorName();
+    for (int i = 0; i < edges.size(); i++)
+    {
+        std::string movie;
+      	int year;
+        edges[i]->getMovieName()->getName(movie);
+        edges[i]->getMovieName()->getYear(year);
+        out << "--[" << movie << "#@" << year << "]-->" << edges[i]->getNextNode()->getActorName();
+    }
+  	out << std::endl;
 }
 
 // check if the path starts and ends at these input nodes

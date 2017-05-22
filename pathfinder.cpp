@@ -22,21 +22,16 @@ int main()
     std::cout << "done!" << std::endl;
     graph.printStats(std::cout);
 
-    ActorPath * path = graph.findPath( "BACON, KEVIN (I)", "ALBAN, CARLO" );
-    std::vector<ActorEdge *> edges = path->getEdges();
-    std::cout << path->getStartNode()->getActorName();
-    for (int i = 0; i < edges.size(); i++)
+    ActorPath * path = graph.findPath( "BACON, KEVIN (I)", "GIAMATTI, PAUL" );
+	if (path == nullptr)
     {
-        std::string movie;
-      	int year;
-      	if (edges[i]->getMovieName() != nullptr)
-        {
-        	edges[i]->getMovieName()->getName(movie);
-          	edges[i]->getMovieName()->getYear(year);
-        }
-        std::cout << "--[" << movie << "#@" << year << "]-->" << edges[i]->getNextNode()->getActorName();
+      cout << "PATH NOT FOUND!!" << endl;
     }
-  	std::cout << std::endl;
+  	else
+    {
+      path->printPath(std::cout);
+    }
+  
     delete path;
     
     return 0;
