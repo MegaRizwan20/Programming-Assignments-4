@@ -45,7 +45,9 @@ void MovieList::addActorNode( ActorNode * node, std::string movieName, int movie
   // If it didn't we make a new instance of the movie Graph
   if (it == listOfGraphs.end())
   {
-    listOfGraphs.insert( (tempGraph = new MovieGraph(movieName, movieYear)) );
+    cout << "Made a new MovieGraph (and Name) !!" << endl;
+    tempGraph = new MovieGraph(movieName, movieYear);
+    listOfGraphs.insert( tempGraph );
   }
   // Else we dereference it and store it into your temp graph
   else
