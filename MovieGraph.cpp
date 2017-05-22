@@ -35,6 +35,7 @@ MovieGraph::MovieGraph(string movieNames, int year)
   //name->getYear(year);
 
   name = new MovieName(movieNames, year);
+  listOfActors = vector<ActorNode *>();
 }
 
 // The destructor

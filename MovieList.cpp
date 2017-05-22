@@ -21,6 +21,14 @@ MovieList::MovieList()
 MovieList::~MovieList()
 {
   // Unsure if we need to do anything in the destructor
+  // We actually need to remove all the movie graphs here
+  std::set<MovieGraph*, compareGraphs>::iterator it3;
+
+  for (it3 = listOfGraphs.begin(); it3 != listOfGraphs.end(); ++it3)
+  {
+    delete *it3;
+  }
+
 }
 
 // Add an actorNode to one of the graphs
@@ -35,8 +43,7 @@ void MovieList::addActorNode( ActorNode * node, std::string movieName, int movie
   // If it didn't we make a new instance of the movie Graph
   if (it == listOfGraphs.end())
   {
-    delete tempGraph;
-    tempGraph = new MovieGraph(movieName, movieYear);
+    listOfGraphs.insert(tempGraph);
   }
   // Else we dereference it and store it into your temp graph
   else
@@ -46,7 +53,6 @@ void MovieList::addActorNode( ActorNode * node, std::string movieName, int movie
   }
   // Add the actor to the temp graph
   tempGraph->addActors(node);
-  //delete tempGraph;
 }
 
 // Find the moviegraph that contains this movie. Return null if does not exist   
