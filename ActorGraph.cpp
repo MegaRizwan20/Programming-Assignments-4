@@ -179,14 +179,8 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
             v->done = true;
 
             // IMPORTANT: put "true" in this parameter to make the edges weighted
-            if (weighted)
-            {
-                neighbors = v->getAdjacentNodes(true);
-            }
-            else
-            {
-                neighbors = v->getAdjacentNodes();
-            }
+            neighbors = v->getAdjacentNodes(weighted);
+
 
             for (int i = 0; i < neighbors.size(); i++)
             {
