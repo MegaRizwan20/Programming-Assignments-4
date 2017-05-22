@@ -30,9 +30,8 @@ int main()
   	else
     {
       path->printPath(std::cout);
+      delete path;
     }
-  
-    delete path;
     
     return 0;
 
