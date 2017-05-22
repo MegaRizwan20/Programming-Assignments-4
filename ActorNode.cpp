@@ -71,6 +71,11 @@ ActorEdge * ActorNode::findEdge( std::string name ) const
     }
 }
 
+ActorEdge * ActorNode::findEdge( const ActorNode * node ) const
+{
+    return findEdge( node->getActorName() );
+}
+
 // Check if this actor has the same name as the input
 bool ActorNode::isSameActor( std::string p_name ) const
 {

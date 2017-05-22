@@ -41,6 +41,9 @@ public:
    
     // get the weight of the edge
     int getWeight() const;
+
+    // get the pointer to the movie name of the edge
+    MovieName * getMovieName() const;
    
 private:   
     

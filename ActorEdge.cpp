@@ -34,6 +34,11 @@ ActorNode * ActorEdge::getNextNode() const
     return nextNode;
 }
 
+MovieName * ActorEdge::getMovieName() const 
+{
+    return movie;
+}
+
 // Add a MovieName to the vector, and if the MovieName is not null,
 // compare the MovieName instances and keep only the one with smaller 
 // weight (essentially the one with more recent year)

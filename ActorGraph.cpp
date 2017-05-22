@@ -29,6 +29,12 @@ ActorGraph::~ActorGraph()
     }
 }
 
+void ActorGraph::printStats( ostream& out ) const
+{
+    out << "#nodes: " << allNodes.size() << std::endl;
+    out << "#movies: " << allMovies.size() << std::endl;
+}
+
 // This function will initialize the graph, along with all the nodes, edges and movienames
 bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
 {
@@ -187,14 +193,32 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
     // time to construct the path
     std::stack<ActorNode *> stack;
     ActorNode * curr = end;
-    while (curr->prev != nullptr)
+    ActorNode * prev;
+    while (curr != nullptr)
     {
         stack.push(curr);
         curr = curr->prev;
     }
     
-    
+    if (stack.top() != start)
+    {
+        cerr << "UNKNOWN ERROR" << endl;
+        delete ret;
+        return nullptr;
+    }
+
+    curr = stack.top();
+    stack.pop();
+    while (!stack.empty()) 
+    {
+        prev = curr;
+        curr = stack.top();
+        stack.pop();
+
+        ret->addEdge( prev->findEdge(curr) );
+    }
+
     // for the compiler, for now
-    return nullptr;
+    return ret;
 
 }

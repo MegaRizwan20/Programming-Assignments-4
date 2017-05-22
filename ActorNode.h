@@ -36,6 +36,8 @@ public:
 
    	// Find an edge that connects to a neighbour with this name. If no neighbour with this name exist, return nullptr.
     ActorEdge * findEdge( std::string name ) const;
+
+    ActorEdge * findEdge( const ActorNode * node ) const;
    
     // Check if this actor has the same name as the input
     bool isSameActor( std::string name ) const;
