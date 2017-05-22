@@ -64,6 +64,8 @@ class MovieGraph
    // Get the MovieName instance 
    // (don't get confused with getMovieName(), which returns a string)
    MovieName * getMoviePointer() const;
+  
+   void deleteMovieName();
 };
 
 #endif // MOVIEGRAPH_H

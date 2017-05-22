@@ -91,3 +91,8 @@ MovieName * MovieGraph::getMoviePointer() const
   return name;
 }
 
+void MovieGraph::deleteMovieName()
+{
+	delete name; 
+}
+

@@ -42,10 +42,13 @@ void MovieList::addActorNode( ActorNode * node, std::string movieName, int movie
   std::set<MovieGraph*, compareGraphs>::iterator it;
   // Return an iterator if we found the graph
   it = listOfGraphs.find(tempGraph);
+  
+  // since movie name is allocated on heap, need to deleted manually
+  temp.deleteMovieName();
+  
   // If it didn't we make a new instance of the movie Graph
   if (it == listOfGraphs.end())
   {
-    cout << "Made a new MovieGraph (and Name) !!" << endl;
     tempGraph = new MovieGraph(movieName, movieYear);
     listOfGraphs.insert( tempGraph );
   }
@@ -72,6 +75,7 @@ MovieGraph * MovieList::searchGraph( std::string movieName, int movieYear ) cons
 
   // Look for the graph
   it2 = listOfGraphs.find(tempSearch);
+  temp.deleteMovieName();
 
   // If we couldn't find it, then return NULL
   if (it2 == listOfGraphs.end())
