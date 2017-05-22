@@ -32,7 +32,15 @@ int main()
       path->printPath(std::cout);
       delete path;
     }
-    
+  
+  	cout << "for debugging only!" << endl;
+  	cout << "ActorGraph: " << sizeof(ActorGraph) << "bytes" << endl;
+  	cout << "ActorNode: " << sizeof(ActorNode) << "bytes" << endl;
+  	cout << "ActorEdge: " << sizeof(ActorEdge) << "bytes" << endl;
+  	cout << "MovieGraph: " << sizeof(MovieGraph) << "bytes" << endl;
+  	cout << "MovieList: " << sizeof(MovieList) << "bytes" << endl;
+  	cout << "MovieName: " << sizeof(MovieName) << "bytes" << endl;
+  
     return 0;
 
 }
