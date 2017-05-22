@@ -12,13 +12,13 @@
 // Constructor
 MovieList::MovieList()
 {
-
+  // Unsure if we need to do anything in the constructor
 }
 
 // Destructor: Destruct all the MovieGraphs
 MovieList::~MovieList()
 {
-
+  // Unsure if we need to do anything in the destructor
 }
 
 // Add an actorNode to one of the graphs

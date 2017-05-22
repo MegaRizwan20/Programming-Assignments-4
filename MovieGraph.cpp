@@ -27,13 +27,18 @@ void MovieGraph::makeEdges()
 // The constructor
 MovieGraph::MovieGraph(string movieNames, int year)
 {
-
+  // Should set the name of the movie name equal to the movieNames
+  //name->movieName = movieNames;
+  name->getName(movieNames);
+  // Should set the years for the movie name
+  //name->year= year;
+  name->getYear(year);
 }
 
 // The destructor
 MovieGraph::~MovieGraph()
 {
-
+  // Don't think we need anything in the destructor
 }
 
 /**
@@ -41,7 +46,7 @@ MovieGraph::~MovieGraph()
  */
 void MovieGraph::addActors(ActorNode * actor)
 {
-
+  listOfActors.push_back(actor);
 }
 
 /**
@@ -49,7 +54,8 @@ void MovieGraph::addActors(ActorNode * actor)
  */
 string MovieGraph::getMovieName() const
 {
-
+  //return name->movieName;
+  //name->getName(movieNames);
 }
 
 /**
@@ -57,13 +63,15 @@ string MovieGraph::getMovieName() const
  */
 int MovieGraph::getMovieYear() const
 {
-
+  //return name->year;
+  //name->getYear(year);
 }
 
 // Get the MovieName instance 
 // (don't get confused with getMovieName(), which returns a string)
 MovieName * MovieGraph::getMoviePointer() const
 {
-
+  // This should return the MovieName instance we made called name
+  return name;
 }
 
