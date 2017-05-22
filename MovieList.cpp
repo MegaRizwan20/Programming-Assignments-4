@@ -35,7 +35,9 @@ MovieList::~MovieList()
 void MovieList::addActorNode( ActorNode * node, std::string movieName, int movieYear )
 {
   // Make a new Movie Graph instance to do comparisons
-  MovieGraph* tempGraph = new MovieGraph(movieName, movieYear);
+  MovieGraph temp(movieName, movieYear);
+  MovieGraph * tempGraph = &temp;
+  
   // Make an iterator
   std::set<MovieGraph*, compareGraphs>::iterator it;
   // Return an iterator if we found the graph
@@ -43,12 +45,11 @@ void MovieList::addActorNode( ActorNode * node, std::string movieName, int movie
   // If it didn't we make a new instance of the movie Graph
   if (it == listOfGraphs.end())
   {
-    listOfGraphs.insert(tempGraph);
+    listOfGraphs.insert( (tempGraph = new MovieGraph(movieName, movieYear)) );
   }
   // Else we dereference it and store it into your temp graph
   else
   {
-    delete tempGraph;
     tempGraph = *it;
   }
   // Add the actor to the temp graph
@@ -61,7 +62,9 @@ void MovieList::addActorNode( ActorNode * node, std::string movieName, int movie
 MovieGraph * MovieList::searchGraph( std::string movieName, int movieYear ) const
 {
   // Make an empty MovieGraph Instance
-  MovieGraph* tempSearch = new MovieGraph(movieName, movieYear);
+  MovieGraph temp(movieName, movieYear);
+  MovieGraph * tempSearch = &temp;
+  
   // Make an iterator to look for graph
   std::set<MovieGraph*, compareGraphs>::iterator it2;
 
@@ -71,13 +74,11 @@ MovieGraph * MovieList::searchGraph( std::string movieName, int movieYear ) cons
   // If we couldn't find it, then return NULL
   if (it2 == listOfGraphs.end())
   {
-    delete tempSearch;
     return NULL;
   }
   // Else we return the movieGraph that contains the movie
   else
   {
-    delete tempSearch;
     return *it2;
   }
   //return tempSearch;

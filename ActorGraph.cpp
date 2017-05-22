@@ -20,6 +20,9 @@ ActorGraph::~ActorGraph()
 {
     for (int i = 0; i < allMovies.size(); i++)
     {
+      	string str;
+      	allMovies[i]->getName(str);
+      	cout << "deleting movie name: " << str << endl;
         delete allMovies[i];
     }
 
