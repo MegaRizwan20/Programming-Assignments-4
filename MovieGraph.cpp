@@ -29,16 +29,19 @@ MovieGraph::MovieGraph(string movieNames, int year)
 {
   // Should set the name of the movie name equal to the movieNames
   //name->movieName = movieNames;
-  name->getName(movieNames);
+  //name->getName(movieNames);
   // Should set the years for the movie name
   //name->year= year;
-  name->getYear(year);
+  //name->getYear(year);
+
+  name = new MovieName(movieNames, year);
 }
 
 // The destructor
 MovieGraph::~MovieGraph()
 {
   // Don't think we need anything in the destructor
+  
 }
 
 /**
@@ -56,6 +59,12 @@ string MovieGraph::getMovieName() const
 {
   //return name->movieName;
   //name->getName(movieNames);
+  // Make a temporary string to return the data
+  string tempString;
+
+  // Get the name
+  name->getName(tempString);
+  return tempString;
 }
 
 /**
@@ -65,6 +74,12 @@ int MovieGraph::getMovieYear() const
 {
   //return name->year;
   //name->getYear(year);
+  // Make a temporary storage 
+  int tempInt;
+
+  // Get the year
+  name->getYear(tempInt);
+  return tempInt;
 }
 
 // Get the MovieName instance 

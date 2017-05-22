@@ -17,6 +17,8 @@
 #include "ActorNode.h"
 #include "MovieGraph.h"
 #include "MovieName.h"
+
+using namespace std;
    
 class MovieList{
    
@@ -47,7 +49,7 @@ private:
     // Pass this class into the listOfGraphs template parameters for comparison
     class compareGraphs {
     public:	
-        bool operator () ( const MovieGraph *& lhs, const MovieGraph *& rhs ) const
+        bool operator () ( MovieGraph * const lhs, MovieGraph * const rhs ) const
    	{
 	    std::string sl = lhs->getMovieName();
    	    sl += std::to_string(lhs->getMovieYear());

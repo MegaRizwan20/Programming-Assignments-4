@@ -13,6 +13,8 @@
 MovieList::MovieList()
 {
   // Unsure if we need to do anything in the constructor
+  listOfGraphs = set<MovieGraph* , compareGraphs>();
+
 }
 
 // Destructor: Destruct all the MovieGraphs
@@ -24,7 +26,27 @@ MovieList::~MovieList()
 // Add an actorNode to one of the graphs
 void MovieList::addActorNode( ActorNode * node, std::string movieName, int movieYear )
 {
-
+  // Make a new Movie Graph instance to do comparisons
+  MovieGraph* tempGraph = new MovieGraph(movieName, movieYear);
+  // Make an iterator
+  std::set<MovieGraph*, compareGraphs>::iterator it;
+  // Return an iterator if we found the graph
+  it = listOfGraphs.find(tempGraph);
+  // If it didn't we make a new instance of the movie Graph
+  if (it == listOfGraphs.end())
+  {
+    delete tempGraph;
+    tempGraph = new MovieGraph(movieName, movieYear);
+  }
+  // Else we dereference it and store it into your temp graph
+  else
+  {
+    delete tempGraph;
+    tempGraph = *it;
+  }
+  // Add the actor to the temp graph
+  tempGraph->addActors(node);
+  //delete tempGraph;
 }
 
 // Find the moviegraph that contains this movie. Return null if does not exist   
@@ -32,19 +54,65 @@ void MovieList::addActorNode( ActorNode * node, std::string movieName, int movie
 // find function.
 MovieGraph * MovieList::searchGraph( std::string movieName, int movieYear ) const
 {
+  // Make an empty MovieGraph Instance
+  MovieGraph* tempSearch = new MovieGraph(movieName, movieYear);
+  // Make an iterator to look for graph
+  std::set<MovieGraph*, compareGraphs>::iterator it2;
 
+  // Look for the graph
+  it2 = listOfGraphs.find(tempSearch);
+
+  // If we couldn't find it, then return NULL
+  if (it2 == listOfGraphs.end())
+  {
+    delete tempSearch;
+    return NULL;
+  }
+  // Else we return the movieGraph that contains the movie
+  else
+  {
+    delete tempSearch;
+    return *it2;
+  }
+  //return tempSearch;
 }
 
 // Make all the MovieGraphs to start making edges
+// Delegate to makeEdges() function in MovieGraph
+// Do this for each element in the set
 void MovieList::makeAllEdges ()
 {
+  MovieGraph* edgeMake;
+  // Iterator for going through the set
+  std::set<MovieGraph*, compareGraphs>::iterator it3;
 
+  for (it3 = listOfGraphs.begin(); it3 != listOfGraphs.end(); ++it3)
+  {
+    edgeMake = *it3;
+    edgeMake->makeEdges();
+  }
+  /*it3 = listOfGraphs.find(edgeMake);
+
+  if (it3 != listOfGraphs.end())
+  {
+    edgeMake->makeEdges();
+  }*/
 }
 
 // Return a list of all the movie name pointers so we can deallocate them later
 std::vector<MovieName *> MovieList::getAllMovieNames() const
 {
+  std::vector<MovieName *> tempVec;
+  MovieGraph* nameList;
+  std::set<MovieGraph*, compareGraphs>::iterator it4;
 
+  for (it4 = listOfGraphs.begin(); it4 != listOfGraphs.end(); ++it4)
+  {
+    nameList = *it4;
+    tempVec.push_back(nameList->getMoviePointer());
+  }
+  return tempVec;
+  
 }
 
 
