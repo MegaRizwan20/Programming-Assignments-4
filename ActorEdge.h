@@ -14,7 +14,6 @@
 #include <string>
 #include <vector>
    
-#include "ActorNode.h"
 #include "MovieName.h"
    
 class ActorNode;
@@ -28,10 +27,7 @@ public:
    
    	// Destructor: do not deallocate anything here
     ~ActorEdge();
-   
-    // get the actor name of the next node
-    std::string getNextActorName() const;
-    
+       
     // check if the next node is the same as the node passed in
 	bool isSameNode( ActorNode * node ) const;
    
@@ -56,5 +52,5 @@ private:
    
 };
 
-   
+
 #endif //ACTOREDGE_H

@@ -13,13 +13,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <set>
 #include <limits.h>
    
 #include "ActorEdge.h"
 #include "MovieName.h"
    
-class ActorEdge;
-   
+
 class ActorNode{
    
 public:
@@ -41,12 +41,9 @@ public:
    
     // Return the actor name
    	std::string getActorName( ) const;
-   
-    // Return the actor edges by value (not reference, so no change can be done)
-    std::vector< ActorEdge * > getEdges() const;
-   
+    
     // Return the list of neighbour nodes
-    std::vector< ActorNode * > getAdjacentNodes() const;
+    std::vector< std::pair<ActorNode *, int> > getAdjacentNodes() const;
    
     // Some member variables that can be used in a Dijkstra's algorithm
     unsigned int dist;
@@ -54,11 +51,20 @@ public:
     bool done;
    
 private:   
-   
+    class compareEdges {
+        public:
+            bool operator() ( ActorEdge * const edge1, ActorEdge * const edge2 )
+            {
+                return (edge1->getNextNode()->getActorName())
+                    .compare(edge2->getNextNode()->getActorName()) < 0;
+            } 
+    };
+
    	// Member variables. Define the name of this actor and which adjacent actors this actor is connected to.
     std::string name;
-    std::vector< ActorEdge * > edges;
+    std::set< ActorEdge *, compareEdges > edges;
     
 };
    
+
 #endif //ACTORNODE_H

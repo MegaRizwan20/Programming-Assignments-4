@@ -22,12 +22,6 @@ ActorEdge::~ActorEdge()
 
 }
 
-// get the actor name of the next node
-std::string ActorEdge::getNextActorName() const
-{
-    return nextNode->getActorName();
-}
-
 // check if the next node is the same as the node passed in
 bool ActorEdge::isSameNode( ActorNode * node ) const
 {

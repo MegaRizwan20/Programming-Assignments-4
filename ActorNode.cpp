@@ -12,48 +12,92 @@
 // Constructor, initialize Actor's name and other variables
 ActorNode::ActorNode( std::string actorName )
 {
-
+    name = actorName;
+    edges = std::set<ActorEdge *, compareEdges>();
 }
 
 // Destructor, probably need to deallocate edges if its allocated on the heap
 ActorNode::~ActorNode()
 {
-
+    for (std::set<ActorEdge *, compareEdges>::iterator it = edges.begin();
+        it != edges.end(); ++it)
+    {
+        delete *it;
+    }
 }
 
 // Add an edge to the node. Make the edge in this function
+// If the edge already exist, just add the moviename to it
 void ActorNode::addEdge( ActorNode * node, MovieName * name )
 {
+    ActorEdge temp( node );
+    ActorEdge * temp2;
 
+    // Search to see if the edge already exist between the nodes
+    std::set<ActorEdge *, compareEdges>::iterator it = edges.find( &temp );
+
+    // If the edge does not exist
+    if (it == edges.end())
+    {
+        ActorEdge * temp2 = new ActorEdge(node);
+        edges.insert( temp2 );
+    }
+    else
+    {
+        temp2 = *it;
+    }
+    
+    // Add the moviename to the edge
+    temp2->addMovie( name );
 }
 
+/* *---------------------------------------------------
 // Find an edge that connects to a neighbour with this name. If no neighbour with this name exist, return nullptr.
 ActorEdge * ActorNode::findEdge( std::string name ) const
 {
+    ActorNode node(name);
+    ActorEdge temp(&node);
+    std::set<ActorEdge *, compareEdges>::iterator it = edges.find( &temp );
 
+    // If the edge does not exist
+    if (it == edges.end())
+    {
+        return nullptr;
+    }
+
+    // Else if the edge does exist
+    else
+    {
+        return *it;
+    }
 }
+*--------------------------------------------------------
+*/
 
 // Check if this actor has the same name as the input
-bool ActorNode::isSameActor( std::string name ) const
+bool ActorNode::isSameActor( std::string p_name ) const
 {
-
+    return (p_name.compare(name)) == 0;
 }
 
 // Return the actor name
 std::string ActorNode::getActorName( ) const
 {
-
-}
-
-// Return the actor edges by value (not reference, so no change can be done)
-std::vector< ActorEdge * > ActorNode::getEdges() const
-{
-
+    return name;
 }
 
 // Return the list of neighbour nodes
-std::vector< ActorNode * > ActorNode::getAdjacentNodes() const
+std::vector< std::pair<ActorNode *, int> > ActorNode::getAdjacentNodes() const
 {
+    std::vector< std::pair<ActorNode *, int> > list;
+    for (std::set<ActorEdge *, compareEdges>::iterator it = edges.begin();
+         it != edges.end(); ++it)
+    {
+        ActorNode * tempNode = (*it)->getNextNode();
+        int weight = (*it)->getWeight();
+        list.push_back( std::make_pair(tempNode, weight) );
+    }
 
+    return list;
 }
 
