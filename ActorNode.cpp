@@ -51,7 +51,6 @@ void ActorNode::addEdge( ActorNode * node, MovieName * name )
     temp2->addMovie( name );
 }
 
-/* *---------------------------------------------------
 // Find an edge that connects to a neighbour with this name. If no neighbour with this name exist, return nullptr.
 ActorEdge * ActorNode::findEdge( std::string name ) const
 {
@@ -71,8 +70,6 @@ ActorEdge * ActorNode::findEdge( std::string name ) const
         return *it;
     }
 }
-*--------------------------------------------------------
-*/
 
 // Check if this actor has the same name as the input
 bool ActorNode::isSameActor( std::string p_name ) const

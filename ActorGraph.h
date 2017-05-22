@@ -17,6 +17,7 @@
 #include <vector>
 #include <utility>
 #include <set>
+#include <stack>
 
 #include "ActorNode.h"
 #include "ActorEdge.h"
@@ -31,7 +32,7 @@ using namespace std;
 
 class compareNodes {
 public:
-    bool operator() ( ActorNode * const lhs, ActorNode * const rhs )
+    bool operator() ( ActorNode * lhs, ActorNode * rhs ) const
     {
         return (lhs->getActorName()).compare(rhs->getActorName()) < 0;
     }
@@ -39,9 +40,17 @@ public:
 
 class comparePaths {
 public:
-    bool operator() ( ActorPath lhs, ActorPath rhs )
+    bool operator() ( ActorPath lhs, ActorPath rhs ) const
     {
         return lhs.getEndNode() < rhs.getEndNode();
+    }
+};
+
+class compareInQueue {
+public:
+    bool operator() ( std::pair<int, ActorNode *> lhs, std::pair<int, ActorNode *> rhs) const
+    {
+        return lhs.first > rhs.first;
     }
 };
 

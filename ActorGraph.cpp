@@ -112,21 +112,89 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges)
 // Return null if the start_name or end_name is not in the graph
 ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name ) const
 {
-    ActorNode temp_start(start_name);
-    ActorNode temp_end(end_name);
-    auto it_start = allNodes.find( &temp_start );
-    auto it_end = allNodes.find( &temp_end );
+    ActorNode * start = new ActorNode(start_name);
+    ActorNode * end = new ActorNode(end_name);
+    ActorNode * v;
+    std::vector< std::pair< ActorNode *, int > > neighbors;
+    int weight;
+    auto it_start = allNodes.find( start );
+    auto it_end = allNodes.find( end );
 
     if (it_start == allNodes.end() || it_end == allNodes.end())
     {
         return nullptr;
     }
-
-    ActorNode * start = *it_start;
-    ActorNode * end = *it_end;
+    
+    delete start;
+    delete end;
+    start = *it_start;
+    end = *it_end;
     ActorPath * ret = new ActorPath(start);
 
     // Path is already complete if the start and end nodes are the same
     if (start == end) return ret;
+
+    // Use the Dijkstra algorithm to find the path
+    std::priority_queue< std::pair<int, ActorNode *>, std::vector<std::pair<int, ActorNode *>>, compareInQueue > queue;
+    for (auto it = allNodes.begin(); it != allNodes.end(); it++)
+    {
+        v = *it;
+        v->dist = INT_MAX;
+        v->prev = nullptr;
+        v->done = false;
+    }
+
+    start->dist = 0;
+    queue.push( make_pair(start->dist, start) );
+
+    while (!queue.empty())
+    {
+        std::pair<int, ActorNode *> curr = queue.top();
+        queue.pop();
+        int weight = curr.first;
+        v = curr.second;
+
+        if (v->done == false)
+        {
+            v->done = true;
+
+            // IMPORTANT: put "true" in this parameter to make the edges weighted
+            if (weighted)
+            {
+                neighbors = v->getAdjacentNodes(true);
+            }
+            else
+            {
+                neighbors = v->getAdjacentNodes();
+            }
+
+            for (int i = 0; i < neighbors.size(); i++)
+            {
+                int c = v->dist + neighbors[i].second;
+                if (c < neighbors[i].first->dist)
+                {
+                    neighbors[i].first->prev = v;
+                    neighbors[i].first->dist = c;
+                    queue.push( std::make_pair( c, neighbors[i].first ) );
+                }
+            }
+        }
+
+        // found the path to the end. stop.
+        if (v == end) break;
+    }
+
+    // time to construct the path
+    std::stack<ActorNode *> stack;
+    ActorNode * curr = end;
+    while (curr->prev != nullptr)
+    {
+        stack.push(curr);
+        curr = curr->prev;
+    }
+    
+    
+    // for the compiler, for now
+    return nullptr;
 
 }

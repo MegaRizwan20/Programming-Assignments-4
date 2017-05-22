@@ -47,15 +47,14 @@ public:
     std::vector< std::pair<ActorNode *, int> > getAdjacentNodes(bool weighted = false) const;
    
     // Some member variables that can be used in a Dijkstra's algorithm
-    unsigned int dist;
+    int dist;
     ActorNode * prev;
     bool done;
-    ActorPath * path;
    
 private:   
     class compareEdges {
         public:
-            bool operator() ( ActorEdge * const edge1, ActorEdge * const edge2 )
+            bool operator() ( ActorEdge * edge1, ActorEdge * edge2 ) const
             {
                 return (edge1->getNextNode()->getActorName())
                     .compare(edge2->getNextNode()->getActorName()) < 0;

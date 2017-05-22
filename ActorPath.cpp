@@ -58,7 +58,7 @@ ActorNode * ActorPath::getEndNode() const
     return linkedEdges[ linkedEdges.size() -1 ]->getNextNode();
 }
 
-std::vector<ActorEdge *> getEdges() const
+std::vector<ActorEdge *> ActorPath::getEdges() const
 {
     return linkedEdges;
 }
