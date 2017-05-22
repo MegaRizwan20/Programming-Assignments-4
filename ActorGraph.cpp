@@ -177,6 +177,7 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
         if (v->done == false)
         {
             v->done = true;
+          	cout << "Start: " << start->getActorName() << ", End: " << v->getActorName() << ", TotalWeight: " << weight << endl;
 
             // IMPORTANT: put "true" in this parameter to make the edges weighted
             neighbors = v->getAdjacentNodes(weighted);
@@ -190,6 +191,7 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
                     neighbors[i].first->prev = v;
                     neighbors[i].first->dist = c;
                     queue.push( std::make_pair( c, neighbors[i].first ) );
+                  	cout << "Pushing neighbour: " << neighbors[i].first->getActorName() << ", dist: " << neighbors[i].first->dist << endl;
                 }
             }
         }

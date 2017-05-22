@@ -34,6 +34,7 @@ MovieList::~MovieList()
 // Add an actorNode to one of the graphs
 void MovieList::addActorNode( ActorNode * node, std::string movieName, int movieYear )
 {
+  /* -------- This algorithm is slow ---------------------------- 
   // Make a new Movie Graph instance to do comparisons
   MovieGraph temp(movieName, movieYear);
   MovieGraph * tempGraph = &temp;
@@ -59,6 +60,19 @@ void MovieList::addActorNode( ActorNode * node, std::string movieName, int movie
   }
   // Add the actor to the temp graph
   tempGraph->addActors(node);
+  / ---------------------------------------------------------------- */
+  
+  MovieGraph * tempGraph = new MovieGraph(movieName, movieYear);
+  auto pair = listOfGraphs.insert( tempGraph );
+  
+  // delete if not inserted
+  if (!pair.second)
+  {
+    tempGraph->deleteMovieName();
+    delete tempGraph;
+  }
+  
+  (*(pair.first))->addActors(node);
 }
 
 // Find the moviegraph that contains this movie. Return null if does not exist   

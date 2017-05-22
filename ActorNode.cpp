@@ -35,6 +35,8 @@ int ActorNode::getNumEdges() const
 // If the edge already exist, just add the moviename to it
 void ActorNode::addEdge( ActorNode * node, MovieName * name )
 {
+  
+  /* --------------- This is slow -----------------------------
     ActorEdge temp( node, nullptr );
     ActorEdge * temp2;
 
@@ -53,7 +55,17 @@ void ActorNode::addEdge( ActorNode * node, MovieName * name )
       	// Add the moviename to the edge
     	temp2->addMovie( name );
     }
-    
+    / ----------------------------------------------------------- */
+  
+  	ActorEdge * temp = new ActorEdge(node, name);
+    auto pair = edges.insert(temp);
+  	
+  	// If not inserted succesfully
+  	if (! pair.second )
+    {
+      delete temp;
+      (*(pair.first))->addMovie( name );
+    }
 }
 
 // Find an edge that connects to a neighbour with this name. If no neighbour with this name exist, return nullptr.
