@@ -91,21 +91,15 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges)
     
         // we have an actor/movie relationship, now see if actor already exists
         ActorNode * tempNode = new ActorNode(actor_name);
-        std::set<ActorNode *, compareNodes>::iterator it = allNodes.find( tempNode );
+        auto pair = allNodes.insert( tempNode );
 
         // if it does not exist
-        if (it == allNodes.end() )
-        {
-            allNodes.insert( tempNode );
-        }
-        // else if it exists
-        else
+        if (!pair.second)
         {
             delete tempNode;
-            tempNode = *it;
         }
 
-        movieList.addActorNode( tempNode, movie_title, movie_year );
+        movieList.addActorNode( *(pair.first), movie_title, movie_year );
     }
 
     if (!infile.eof()) {
