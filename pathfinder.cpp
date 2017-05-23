@@ -18,7 +18,7 @@ int main()
     ActorGraph graph;
     const static bool weight = true;
     std::cout << "Loading from file, this might take a while..." << flush;
-    graph.loadFromFile( "movie_casts.tsv", weight );
+    graph.loadFromFile( "test_file", weight );
     std::cout << "done!" << std::endl;
     graph.printStats(std::cout);
 
