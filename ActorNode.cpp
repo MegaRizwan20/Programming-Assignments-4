@@ -35,69 +35,13 @@ int ActorNode::getNumEdges() const
 // If the edge already exist, just add the moviename to it
 void ActorNode::addEdge( ActorNode * node, MovieName * name )
 {
-  
-  /* --------------- This is slow -----------------------------
-    ActorEdge temp( node, nullptr );
-    ActorEdge * temp2;
-
-    // Search to see if the edge already exist between the nodes
-    std::set<ActorEdge *, compareEdges>::iterator it = edges.find( &temp );
-
-    // If the edge does not exist
-    if (it == edges.end())
-    {
-        ActorEdge * temp2 = new ActorEdge(node, name);
-        edges.insert( temp2 );
-    }
-    else
-    {
-        temp2 = *it;
-      	// Add the moviename to the edge
-    	temp2->addMovie( name );
-    }
-    / ----------------------------------------------------------- */
-  
-  	ActorEdge * temp = new ActorEdge(node, name);
-  
-  /* ------------ old slow shits -----------------
-    auto pair = edges.insert(temp);
-  	
-  	// If not inserted succesfully
-  	if (! pair.second )
-    {
-      delete temp;
-      (*(pair.first))->addMovie( name );
-    }
-    ---------------------------------------------- */
-  
-  	edges.push_back( temp );
+  	edges.push_back( new ActorEdge(node, name) );
 }
 
-// Find an edge that connects to a neighbour with this name. If no neighbour with this name exist, return nullptr.
-/* ---------------------------------------------------------
-ActorEdge * ActorNode::findEdge( std::string name ) const
-{
-    ActorNode node(name);
-    ActorEdge temp(&node, nullptr);
-    std::set<ActorEdge *, compareEdges>::iterator it = edges.find( &temp );
-
-    // If the edge does not exist
-    if (it == edges.end())
-    {
-        return nullptr;
-    }
-
-    // Else if the edge does exist
-    else
-    {
-        return *it;
-    }
-}
------------------------------------------------------------ */
-
+// This is a sequential search. Since its a pointer comparison,
+// this shouldn't take too long.
 ActorEdge * ActorNode::findEdge( const ActorNode * node ) const
 {
-    //return findEdge( node->getActorName() );
   	for (int i = 0; i < edges.size(); i++)
     {
       if (edges[i]->getNextNode() == node)
