@@ -136,7 +136,7 @@ int main (int argc, char* argv[])
     {
       cerr << "Failed to read " << argv[3] << "!\n";
       delete twoActors;
-      return false;
+      return -1;
     }
     infile.close();
     //cout << "Done! " << endl;
