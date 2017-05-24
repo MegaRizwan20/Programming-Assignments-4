@@ -134,7 +134,7 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
   
     if (it_start == allNodes.end() || it_end == allNodes.end())
     {
-      	cout << "Actor node is not found!" << endl;
+      	cout << "One or both of these actor names do not exist!" << endl;
         return nullptr;
     }
 
@@ -209,13 +209,6 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
     {
         stack.push(curr);
         curr = curr->prev;
-    }
-    
-    if (stack.top() != start)
-    {
-        cerr << "UNKNOWN ERROR" << endl;
-        delete ret;
-        return nullptr;
     }
 
     curr = stack.top();
