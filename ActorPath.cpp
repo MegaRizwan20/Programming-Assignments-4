@@ -31,14 +31,21 @@ void ActorPath::addEdge( ActorEdge * edge )
 void ActorPath::printPath( ostream& out ) const
 {
     std::vector<ActorEdge *> edges = getEdges();
-    out << getStartNode()->getActorName();
+    //cout << " money " << endl;
+    out << "(" << getStartNode()->getActorName() << ")";
+    //cout << "Computing path for (" <<getStartNode()->getActorName() << ") -> ("
+    //                << edges[i]->getNextNode()->getActorName() << ")" << endl;
     for (int i = 0; i < edges.size(); i++)
     {
         std::string movie;
       	int year;
+        //cout << "Computing path for (" <<getStartNode()->getActorName() << 
+        //") -> ("<< edges[i]->getNextNode()->getActorName() << ")" << endl;
+
         edges[i]->getMovieName()->getName(movie);
         edges[i]->getMovieName()->getYear(year);
-        out << "--[" << movie << "#@" << year << "]-->" << edges[i]->getNextNode()->getActorName();
+        out << "--[" << movie << "#@" << year << "]-->" << "(" << 
+                               edges[i]->getNextNode()->getActorName()<< ")";
     }
   	out << std::endl;
 }
