@@ -67,7 +67,7 @@ protected:
     // Stores the list of pointers of all MovieName instances constructed. This is to ensure that
     // the MovieName instances get deleted once and once only
     std::vector< MovieName *> allMovies;
-
+   
 public:
     ActorGraph(void);
     ~ActorGraph();
