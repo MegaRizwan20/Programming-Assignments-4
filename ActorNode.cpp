@@ -13,13 +13,13 @@
 ActorNode::ActorNode( std::string actorName )
 {
     name = actorName;
-    edges = std::set<ActorEdge *, compareEdges>();
+    edges = std::vector<ActorEdge *>();
 }
 
 // Destructor, probably need to deallocate edges if its allocated on the heap
 ActorNode::~ActorNode()
 {
-    for (std::set<ActorEdge *, compareEdges>::iterator it = edges.begin();
+    for (auto it = edges.begin();
         it != edges.end(); ++it)
     {
         delete *it;
@@ -58,6 +58,8 @@ void ActorNode::addEdge( ActorNode * node, MovieName * name )
     / ----------------------------------------------------------- */
   
   	ActorEdge * temp = new ActorEdge(node, name);
+  
+  /* ------------ old slow shits -----------------
     auto pair = edges.insert(temp);
   	
   	// If not inserted succesfully
@@ -66,9 +68,13 @@ void ActorNode::addEdge( ActorNode * node, MovieName * name )
       delete temp;
       (*(pair.first))->addMovie( name );
     }
+    ---------------------------------------------- */
+  
+  	edges.push_back( temp );
 }
 
 // Find an edge that connects to a neighbour with this name. If no neighbour with this name exist, return nullptr.
+/* ---------------------------------------------------------
 ActorEdge * ActorNode::findEdge( std::string name ) const
 {
     ActorNode node(name);
@@ -87,10 +93,18 @@ ActorEdge * ActorNode::findEdge( std::string name ) const
         return *it;
     }
 }
+----------------------------------------------------------- */
 
 ActorEdge * ActorNode::findEdge( const ActorNode * node ) const
 {
-    return findEdge( node->getActorName() );
+    //return findEdge( node->getActorName() );
+  	for (int i = 0; i < edges.size(); i++)
+    {
+      if (edges[i]->getNextNode() == node)
+        return edges[i];
+    }
+  
+  	return nullptr;
 }
 
 // Check if this actor has the same name as the input
@@ -114,7 +128,7 @@ std::vector< std::pair<ActorNode *, int> > ActorNode::getAdjacentNodes(bool weig
     // If we are dealing with weighted edges
     if (weighted)
     {
-        for (std::set<ActorEdge *, compareEdges>::iterator it = edges.begin();
+        for (auto it = edges.begin();
                 it != edges.end(); ++it)
         {
             ActorNode * tempNode = (*it)->getNextNode();
@@ -124,7 +138,7 @@ std::vector< std::pair<ActorNode *, int> > ActorNode::getAdjacentNodes(bool weig
     }
     else
     {
-        for (std::set<ActorEdge *, compareEdges>::iterator it = edges.begin();
+        for (auto it = edges.begin();
                 it != edges.end(); ++it)
         {
             ActorNode * tempNode = (*it)->getNextNode();

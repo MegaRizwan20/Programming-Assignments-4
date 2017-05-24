@@ -68,7 +68,10 @@ private:
 
    	// Member variables. Define the name of this actor and which adjacent actors this actor is connected to.
     std::string name;
-    std::set< ActorEdge *, compareEdges > edges;
+                                                                       
+                                                                       
+    //std::set< ActorEdge *, compareEdges > edges;
+   	std::vector< ActorEdge * > edges;
     
 };
    
