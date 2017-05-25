@@ -67,6 +67,8 @@ protected:
     // Stores the list of pointers of all MovieName instances constructed. This is to ensure that
     // the MovieName instances get deleted once and once only
     std::vector< MovieName *> allMovies;
+
+    ActorNode * prevSearch;
    
 public:
     ActorGraph(void);
@@ -86,7 +88,7 @@ public:
     bool loadFromFile(const char* in_filename, bool use_weighted_edges);
 
     // Find the shortest path from the starting node and ends up at the ending node
-    ActorPath * findPath( std::string start_name, std::string end_name ) const;
+    ActorPath * findPath( std::string start_name, std::string end_name ) ;
   
     void printStats( ostream& out ) const;
 };

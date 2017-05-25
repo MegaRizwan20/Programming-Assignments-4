@@ -14,6 +14,7 @@ using namespace std;
 ActorGraph::ActorGraph(void) 
 {
     allNodes = set< ActorNode *, compareNodes >();
+    prevSearch = nullptr;
 }
 
 ActorGraph::~ActorGraph() 
@@ -120,7 +121,7 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges)
 // Depending on the implementation of this class, the caller might have
 // to manually deallocate the returned pointer to prevent leaks.
 // Return null if the start_name or end_name is not in the graph
-ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name ) const
+ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
 {
     ActorNode * start = new ActorNode(start_name);
     ActorNode * end = new ActorNode(end_name);
@@ -148,54 +149,57 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
       return ret;
     }
 
-    // Use the Dijkstra algorithm to find the path
-    std::priority_queue< std::pair<int, ActorNode *>, std::vector<std::pair<int, ActorNode *>>, compareInQueue > queue;
-    for (auto it = allNodes.begin(); it != allNodes.end(); it++)
+    if (prevSearch != start || end->prev == nullptr)
     {
-        v = *it;
-        v->dist = INT_MAX;
-        v->prev = nullptr;
-        v->done = false;
-    }
-
-    start->dist = 0;
-    queue.push( make_pair(start->dist, start) );
-
-    while (!queue.empty())
-    {
-        std::pair<int, ActorNode *> curr = queue.top();
-        queue.pop();
-        int weight = curr.first;
-        v = curr.second;
-
-        if (v->done == false)
+        prevSearch = start;
+        // Use the Dijkstra algorithm to find the path
+        std::priority_queue< std::pair<int, ActorNode *>, std::vector<std::pair<int, ActorNode *>>, compareInQueue > queue;
+        for (auto it = allNodes.begin(); it != allNodes.end(); it++)
         {
-            v->done = true;
-//          	cout << "Start: " << start->getActorName() << ", End: " << v->getActorName() << ", TotalWeight: " << weight << endl;
-
-            // IMPORTANT: put "true" in this parameter to make the edges weighted
-            neighbors = v->getAdjacentNodes(weighted);
-
-
-            for (int i = 0; i < neighbors.size(); i++)
-            {
-                int c = v->dist + neighbors[i].second;
-                if (c < neighbors[i].first->dist)
-                {
-                    neighbors[i].first->prev = v;
-                    neighbors[i].first->dist = c;
-                    queue.push( std::make_pair( c, neighbors[i].first ) );
-//                  	cout << "Pushing neighbour: " << neighbors[i].first->getActorName() << ", dist: " << neighbors[i].first->dist << endl;
-                }
-            }
+            v = *it;
+            v->dist = INT_MAX;
+            v->prev = nullptr;
+            v->done = false;
         }
 
-        // found the path to the end. stop.
-        if (v == end) break;
+        start->dist = 0;
+        queue.push( make_pair(start->dist, start) );
+
+        while (!queue.empty())
+        {
+            std::pair<int, ActorNode *> curr = queue.top();
+            queue.pop();
+            int weight = curr.first;
+            v = curr.second;
+
+            if (v->done == false)
+            {
+                v->done = true;
+                //          	cout << "Start: " << start->getActorName() << ", End: " << v->getActorName() << ", TotalWeight: " << weight << endl;
+
+                // IMPORTANT: put "true" in this parameter to make the edges weighted
+                neighbors = v->getAdjacentNodes(weighted);
+
+
+                for (int i = 0; i < neighbors.size(); i++)
+                {
+                    int c = v->dist + neighbors[i].second;
+                    if (c < neighbors[i].first->dist)
+                    {
+                        neighbors[i].first->prev = v;
+                        neighbors[i].first->dist = c;
+                        queue.push( std::make_pair( c, neighbors[i].first ) );
+                        //                  	cout << "Pushing neighbour: " << neighbors[i].first->getActorName() << ", dist: " << neighbors[i].first->dist << endl;
+                    }
+                }
+            }
+
+            // found the path to the end. stop.
+            if (v == end) break;
+        }
     }
   
-  
-  	if (v != end)
+  	if (end->prev == nullptr)
     {
       delete ret;
       return nullptr;
