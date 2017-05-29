@@ -228,5 +228,36 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
 
     // for the compiler, for now
     return ret;
+}
 
+int ActorGraph::bsfMin( std::string start_name, std::string end_name )
+{
+    ActorNode * start = new ActorNode(start_name);
+    ActorNode * end = new ActorNode(end_name);
+    ActorNode * v;
+    std::vector< std::pair< ActorNode *, int > > neighbors;
+    int weight;
+    auto it_start = allNodes.find( start );
+    auto it_end = allNodes.find( end );
+    delete start;
+    delete end;
+  
+    if (it_start == allNodes.end() || it_end == allNodes.end())
+    {
+      	cout << "One or both of these actor names do not exist!" << endl;
+        return nullptr;
+    }
+
+    start = *it_start;
+    end = *it_end;
+    ActorPath * ret = new ActorPath(start);
+
+    // Path is already complete if the start and end nodes are the same
+    if (start == end) 
+    {
+      return ret;
+    }
+
+    // perform a bfs search from the start node to the end node
+    
 }
