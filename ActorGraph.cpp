@@ -149,6 +149,7 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
       return ret;
     }
 
+  	// previously found, no need to search again
     if (prevSearch != start || end->prev == nullptr)
     {
         prevSearch = start;
@@ -175,21 +176,22 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
             if (v->done == false)
             {
                 v->done = true;
-                //          	cout << "Start: " << start->getActorName() << ", End: " << v->getActorName() << ", TotalWeight: " << weight << endl;
 
                 // IMPORTANT: put "true" in this parameter to make the edges weighted
                 neighbors = v->getAdjacentNodes(weighted);
 
-
                 for (int i = 0; i < neighbors.size(); i++)
                 {
+                  	// don't need to add neighbors that are already searched
+                  	if (neighbors[i].first->done == true) continue;
+                  
+                  	// find the total distance to get to the new neighbor
                     int c = v->dist + neighbors[i].second;
                     if (c < neighbors[i].first->dist)
                     {
                         neighbors[i].first->prev = v;
                         neighbors[i].first->dist = c;
                         queue.push( std::make_pair( c, neighbors[i].first ) );
-                        //                  	cout << "Pushing neighbour: " << neighbors[i].first->getActorName() << ", dist: " << neighbors[i].first->dist << endl;
                     }
                 }
             }
