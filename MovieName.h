@@ -38,6 +38,7 @@ class MovieName
      * the movie within a string. 
      */
     void getName(string& g_movieName) const;
+    string getName() const;
 
     /**
      * Used to get the year of the movie. Should do a pass by reference of
@@ -45,6 +46,7 @@ class MovieName
      * an integer.
      */
     void getYear(int& g_year) const;
+    int getYear() const;
 
     /**
      * Gets the weight of the movie by doing weight = 1 + (2015 -Year). 

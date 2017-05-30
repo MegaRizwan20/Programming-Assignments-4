@@ -22,6 +22,16 @@ MovieName::MovieName(string p_movieName, int p_year)
   year = p_year;
 }
 
+string MovieName::getName() const
+{
+  return movieName;
+}
+
+int MovieName::getYear() const
+{
+  return year;
+}
+
 void MovieName::getName(string& g_movieName) const
 {
   g_movieName = movieName;

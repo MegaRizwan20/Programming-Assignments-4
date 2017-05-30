@@ -149,58 +149,53 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
       return ret;
     }
 
-  	// previously found, no need to search again
-    if (prevSearch != start || end->prev == nullptr)
+    // Use the Dijkstra algorithm to find the path
+    std::priority_queue< std::pair<int, ActorNode *>, std::vector<std::pair<int, ActorNode *>>, compareInQueue > queue;
+    for (auto it = allNodes.begin(); it != allNodes.end(); it++)
     {
-        prevSearch = start;
-        // Use the Dijkstra algorithm to find the path
-        std::priority_queue< std::pair<int, ActorNode *>, std::vector<std::pair<int, ActorNode *>>, compareInQueue > queue;
-        for (auto it = allNodes.begin(); it != allNodes.end(); it++)
+        v = *it;
+        v->dist = INT_MAX;
+        v->prev = nullptr;
+        v->done = false;
+    }
+
+    start->dist = 0;
+    queue.push( make_pair(start->dist, start) );
+
+    while (!queue.empty())
+    {
+        std::pair<int, ActorNode *> curr = queue.top();
+        queue.pop();
+        int weight = curr.first;
+        v = curr.second;
+
+        if (v->done == false)
         {
-            v = *it;
-            v->dist = INT_MAX;
-            v->prev = nullptr;
-            v->done = false;
-        }
+            v->done = true;
 
-        start->dist = 0;
-        queue.push( make_pair(start->dist, start) );
+            // IMPORTANT: put "true" in this parameter to make the edges weighted
+            neighbors = v->getAdjacentNodes(weighted);
 
-        while (!queue.empty())
-        {
-            std::pair<int, ActorNode *> curr = queue.top();
-            queue.pop();
-            int weight = curr.first;
-            v = curr.second;
-
-            if (v->done == false)
+            for (int i = 0; i < neighbors.size(); i++)
             {
-                v->done = true;
+                // don't need to add neighbors that are already searched
+                if (neighbors[i].first->done == true) continue;
 
-                // IMPORTANT: put "true" in this parameter to make the edges weighted
-                neighbors = v->getAdjacentNodes(weighted);
-
-                for (int i = 0; i < neighbors.size(); i++)
+                // find the total distance to get to the new neighbor
+                int c = v->dist + neighbors[i].second;
+                if (c < neighbors[i].first->dist)
                 {
-                  	// don't need to add neighbors that are already searched
-                  	if (neighbors[i].first->done == true) continue;
-                  
-                  	// find the total distance to get to the new neighbor
-                    int c = v->dist + neighbors[i].second;
-                    if (c < neighbors[i].first->dist)
-                    {
-                        neighbors[i].first->prev = v;
-                        neighbors[i].first->dist = c;
-                        queue.push( std::make_pair( c, neighbors[i].first ) );
-                    }
+                    neighbors[i].first->prev = v;
+                    neighbors[i].first->dist = c;
+                    queue.push( std::make_pair( c, neighbors[i].first ) );
                 }
             }
-
-            // found the path to the end. stop.
-            if (v == end) break;
         }
+
+        // found the path to the end. stop.
+        if (v == end) break;
     }
-  
+
   	if (end->prev == nullptr)
     {
       delete ret;
@@ -232,7 +227,8 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
     return ret;
 }
 
-int ActorGraph::bsfMin( std::string start_name, std::string end_name )
+// For this part, we might need the graph to become a minimum spanning tree first
+int ActorGraph::bfsMin( std::string start_name, std::string end_name )
 {
     ActorNode * start = new ActorNode(start_name);
     ActorNode * end = new ActorNode(end_name);
@@ -241,25 +237,86 @@ int ActorGraph::bsfMin( std::string start_name, std::string end_name )
     int weight;
     auto it_start = allNodes.find( start );
     auto it_end = allNodes.find( end );
+    int retYear = 9999;
     delete start;
     delete end;
   
     if (it_start == allNodes.end() || it_end == allNodes.end())
     {
       	cout << "One or both of these actor names do not exist!" << endl;
-        return nullptr;
+        return retYear;
     }
 
     start = *it_start;
     end = *it_end;
-    ActorPath * ret = new ActorPath(start);
 
     // Path is already complete if the start and end nodes are the same
     if (start == end) 
     {
-      return ret;
+      return retYear;
     }
 
     // perform a bfs search from the start node to the end node
+    std::queue< std::pair<ActorNode *, int> > queue;
+    for (auto it = allNodes.begin(); it != allNodes.end(); it++)
+    {
+        v = *it;
+        v->dist = 0;
+        v->prev = nullptr;
+        v->done = false;
+    }
     
+    queue.push( make_pair(start, 0) );
+    while ( !queue.empty() )
+    {
+        // get the top element of the queue
+        ActorNode * curr = queue.front().first;
+        int year = queue.front().second;
+        if (year > curr->dist)
+        {
+            curr->dist = year;
+        }
+        else
+        {
+            year = curr->dist;
+        }
+
+        // if the curr node is actually the end node
+        if (curr == end)
+        {
+            // find the path with the smallest year
+            if (year < retYear)
+            {
+                retYear = year;
+            }
+        }
+
+        queue.pop();
+        if (curr->done == false)
+        {
+            curr->done = true;
+
+            // get all the adjacent nodes with the year of the edge
+            neighbors = curr->getNodesAndYears();
+
+            // add the neighbors to the queue if they are not being visited yet
+            for (int i = 0; i < neighbors.size(); i++)
+            {
+                if ( ! neighbors[i].first->done )
+                {
+                    neighbors[i].first->prev = curr;
+                    if ( neighbors[i].second > year )
+                    {
+                        queue.push( neighbors[i] );
+                    }
+                    else
+                    {
+                        queue.push( make_pair(neighbors[i].first, year) );
+                    }
+                }
+            }
+        }
+    }
+
+    return retYear;
 }

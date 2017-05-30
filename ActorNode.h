@@ -45,9 +45,12 @@ public:
     // Return the actor name
    	std::string getActorName( ) const;
     
-    // Return the list of neighbour nodes
+    // Return the list of neighbour nodes and the weights
     std::vector< std::pair<ActorNode *, int> > getAdjacentNodes(bool weighted = false) const;
-   
+  
+    // Return the list of neighbor nodes and the years
+    std::vector< std::pair<ActorNode *, int> > getNodesAndYears() const;
+
    	// Return the number of edges this node is connected to
    	int getNumEdges() const;
    
