@@ -180,6 +180,7 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
             queue.pop();
             int weight = curr.first;
             v = curr.second;
+            v->dist = weight;
 
             if (v->done == false)
             {

@@ -108,6 +108,8 @@ public:
     // perform a bfs search for the smallest year in which 2 actors are connected
     int bfsMin( std::string start_name, std::string end_name);
 
+    // Use union find to search the smallest year in which 2 actors are connected
+    // Disjoint must be set to true for this function to work
     int unionFind( std::string start_name, std::string end_name );
 };
 
