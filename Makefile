@@ -22,7 +22,7 @@ all: pathfinder
 
 pathfinder: pathfinder.cpp ActorGraph.o ActorNode.o ActorEdge.o ActorPath.o MovieList.o MovieGraph.o MovieName.o
 
-
+actorconnections: actorconnections.cpp ActorGraph.o ActorNode.o ActorEdge.o ActorPath.o MovieList.o MovieGraph.o MovieName.o
 
 # include what ever source code *.h files ActorGraph relies on (these are merely the ones that were used in the solution)
 

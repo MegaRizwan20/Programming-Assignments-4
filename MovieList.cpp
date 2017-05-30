@@ -14,7 +14,13 @@ MovieList::MovieList()
 {
   // Unsure if we need to do anything in the constructor
   listOfGraphs = set<MovieGraph* , compareGraphs>();
+  disjoint = false;
+}
 
+MovieList::MovieList(bool p_disjoint)
+{
+  listOfGraphs = set<MovieGraph* , compareGraphs>();
+  disjoint = p_disjoint;
 }
 
 // Destructor: Destruct all the MovieGraphs
@@ -28,41 +34,12 @@ MovieList::~MovieList()
   {
     delete *it3;
   }
-
 }
 
 // Add an actorNode to one of the graphs
 void MovieList::addActorNode( ActorNode * node, std::string movieName, int movieYear )
 {
-  /* -------- This algorithm is slow ---------------------------- 
-  // Make a new Movie Graph instance to do comparisons
-  MovieGraph temp(movieName, movieYear);
-  MovieGraph * tempGraph = &temp;
-  
-  // Make an iterator
-  std::set<MovieGraph*, compareGraphs>::iterator it;
-  // Return an iterator if we found the graph
-  it = listOfGraphs.find(tempGraph);
-  
-  // since movie name is allocated on heap, need to deleted manually
-  temp.deleteMovieName();
-  
-  // If it didn't we make a new instance of the movie Graph
-  if (it == listOfGraphs.end())
-  {
-    tempGraph = new MovieGraph(movieName, movieYear);
-    listOfGraphs.insert( tempGraph );
-  }
-  // Else we dereference it and store it into your temp graph
-  else
-  {
-    tempGraph = *it;
-  }
-  // Add the actor to the temp graph
-  tempGraph->addActors(node);
-  / ---------------------------------------------------------------- */
-  
-  MovieGraph * tempGraph = new MovieGraph(movieName, movieYear);
+  MovieGraph * tempGraph = new MovieGraph(movieName, movieYear, disjoint);
   auto pair = listOfGraphs.insert( tempGraph );
   
   // delete if not inserted
@@ -81,7 +58,7 @@ void MovieList::addActorNode( ActorNode * node, std::string movieName, int movie
 MovieGraph * MovieList::searchGraph( std::string movieName, int movieYear ) const
 {
   // Make an empty MovieGraph Instance
-  MovieGraph temp(movieName, movieYear);
+  MovieGraph temp(movieName, movieYear, disjoint);
   MovieGraph * tempSearch = &temp;
   
   // Make an iterator to look for graph
@@ -118,12 +95,6 @@ void MovieList::makeAllEdges ()
     edgeMake = *it3;
     edgeMake->makeEdges();
   }
-  /*it3 = listOfGraphs.find(edgeMake);
-
-  if (it3 != listOfGraphs.end())
-  {
-    edgeMake->makeEdges();
-  }*/
 }
 
 // Return a list of all the movie name pointers so we can deallocate them later

@@ -110,3 +110,33 @@ std::vector< std::pair<ActorNode *, int> > ActorNode::getNodesAndYears() const
 
     return list;
 }
+
+ActorEdge * ActorNode::getFirstEdge() const 
+{
+    return edges[0];
+}
+
+void ActorNode::unionWith( ActorNode * ufind, MovieName * p_name) 
+{
+    ActorNode * this_set = this;
+    ActorNode * u_set = ufind;
+    while (this_set->getNumEdges() != 0)
+    {
+        this_set = this_set->getFirstEdge()->getNextNode();
+        if (this_set->getNumEdges() > 1)
+        {
+            std::cerr << "UNEXPECTED ERROR!" << std::endl;
+        }
+    }
+    
+    while (u_set->getNumEdges() != 0)
+    {
+        u_set = u_set->getFirstEdge()->getNextNode();
+        if (u_set->getNumEdges() > 1)
+        {
+            std::cerr << "UNEXPECTED ERROR!" << std::endl;
+        }
+    }
+
+    u_set->addEdge( this_set, p_name );
+}

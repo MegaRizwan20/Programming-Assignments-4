@@ -67,6 +67,7 @@ protected:
   
     // Maybe add class data structure(s) here
     bool weighted;
+    bool disjoint;
 
     // This defines a set of pairs, each containing a node (the starting node) and the set of
     // found paths.
@@ -82,6 +83,7 @@ protected:
    
 public:
     ActorGraph(void);
+    ActorGraph(bool p_disjoint);
     ~ActorGraph();
 
     // Maybe add some more methods here
@@ -105,6 +107,8 @@ public:
 
     // perform a bfs search for the smallest year in which 2 actors are connected
     int bfsMin( std::string start_name, std::string end_name);
+
+    int unionFind( std::string start_name, std::string end_name );
 };
 
 

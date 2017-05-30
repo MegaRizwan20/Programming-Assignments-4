@@ -25,7 +25,8 @@ class MovieList{
 public:
     
     // Constructor
-    MovieList();
+    MovieList();    // by default disjoint is false;
+    MovieList(bool p_disjoint);
    
     // Destructor: Destruct all the MovieGraphs
     ~MovieList();
@@ -50,20 +51,22 @@ private:
     class compareGraphs {
     public:	
         bool operator () ( MovieGraph * const lhs, MovieGraph * const rhs ) const
-   	{
-	    std::string sl = lhs->getMovieName();
-   	    sl += std::to_string(lhs->getMovieYear());
-   
-	    std::string sr = rhs->getMovieName();
-   	    sr += std::to_string(rhs->getMovieYear());
-   
-   	    return (sl.compare(sr)) < 0;
+   	    {
+            if ( lhs->getMovieYear() != rhs->getMovieYear() )
+            {
+                return lhs->getMovieYear() > rhs->getMovieYear();
+            }
+
+            std::string sl = lhs->getMovieName();
+            std::string sr = rhs->getMovieName();
+
+            return (sl.compare(sr)) < 0;
         }
     };
    
     // store the list of moviegraphs
     std::set<MovieGraph *, compareGraphs> listOfGraphs;
-   
+    bool disjoint;
 };
 
    

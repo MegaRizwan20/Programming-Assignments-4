@@ -53,6 +53,14 @@ public:
 
    	// Return the number of edges this node is connected to
    	int getNumEdges() const;
+
+    // Return the first edge in the edges
+    ActorEdge * getFirstEdge() const;
+
+    // Perform the Union operation
+    // This function assumes that 'this' node is in a set with
+    // an equal or greater height than the set of the input node
+    void unionWith( ActorNode * u_node, MovieName * p_name );
    
     // Some member variables that can be used in a Dijkstra's algorithm
     int dist;

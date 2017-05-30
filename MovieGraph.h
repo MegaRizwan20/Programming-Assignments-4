@@ -29,10 +29,12 @@ class MovieGraph
     // The list of ActorNode pointers
     vector<ActorNode*> listOfActors;
 
+    bool disjoint;
+
   public:
 
    // The constructor
-   MovieGraph(string movieNames, int year);
+   MovieGraph(string movieNames, int year, bool p_disjoint);
    // The destructor
    ~MovieGraph();
 
