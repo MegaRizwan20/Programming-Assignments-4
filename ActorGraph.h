@@ -54,6 +54,14 @@ public:
     }
 };
 
+class compareYears {
+public:
+    bool operator() ( std::pair<ActorNode *, int> lhs, std::pair<ActorNode *, int> rhs ) const
+    {
+        return lhs.second > rhs.second;
+    }
+};
+
 class ActorGraph {
 protected:
   

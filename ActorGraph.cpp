@@ -257,7 +257,8 @@ int ActorGraph::bfsMin( std::string start_name, std::string end_name )
     }
 
     // perform a bfs search from the start node to the end node
-    std::queue< std::pair<ActorNode *, int> > queue;
+    std::priority_queue< std::pair<ActorNode *, int>, 
+        std::vector<std::pair<ActorNode *, int>>, compareYears> queue;
     for (auto it = allNodes.begin(); it != allNodes.end(); it++)
     {
         v = *it;
@@ -270,8 +271,8 @@ int ActorGraph::bfsMin( std::string start_name, std::string end_name )
     while ( !queue.empty() )
     {
         // get the top element of the queue
-        ActorNode * curr = queue.front().first;
-        int year = queue.front().second;
+        ActorNode * curr = queue.top().first;
+        int year = queue.top().second;
         if (curr->prev == nullptr)
         {
             curr->dist = year;
@@ -294,6 +295,7 @@ int ActorGraph::bfsMin( std::string start_name, std::string end_name )
             {
                 retYear = year;
             }
+            break;
         }
 
         queue.pop();
@@ -310,6 +312,7 @@ int ActorGraph::bfsMin( std::string start_name, std::string end_name )
                 if ( ! neighbors[i].first->done )
                 {
                     queue.push( neighbors[i] );
+                    neighbors[i].first->prev = curr;
                 }
             }
         }
