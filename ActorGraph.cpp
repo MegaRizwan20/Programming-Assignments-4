@@ -272,15 +272,20 @@ int ActorGraph::bfsMin( std::string start_name, std::string end_name )
         // get the top element of the queue
         ActorNode * curr = queue.front().first;
         int year = queue.front().second;
-        if (year > curr->dist)
+        if (curr->prev == nullptr)
+        {
+            curr->dist = year;
+        }
+        else if (year > curr->prev->dist)
         {
             curr->dist = year;
         }
         else
         {
-            year = curr->dist;
+            year = curr->prev->dist;
+            curr->dist = year;
         }
-
+ 
         // if the curr node is actually the end node
         if (curr == end)
         {
@@ -304,15 +309,7 @@ int ActorGraph::bfsMin( std::string start_name, std::string end_name )
             {
                 if ( ! neighbors[i].first->done )
                 {
-                    neighbors[i].first->prev = curr;
-                    if ( neighbors[i].second > year )
-                    {
-                        queue.push( neighbors[i] );
-                    }
-                    else
-                    {
-                        queue.push( make_pair(neighbors[i].first, year) );
-                    }
+                    queue.push( neighbors[i] );
                 }
             }
         }
