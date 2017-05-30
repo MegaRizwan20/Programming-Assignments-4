@@ -57,6 +57,7 @@ public:
     // Some member variables that can be used in a Dijkstra's algorithm
     int dist;
     ActorNode * prev;
+    ActorNode * next;
     bool done;
    
 private:   

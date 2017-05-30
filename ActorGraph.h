@@ -76,7 +76,9 @@ protected:
     // the MovieName instances get deleted once and once only
     std::vector< MovieName *> allMovies;
 
+    // store previously searched paths to make the next search faster if its the same starting actor
     ActorNode * prevSearch;
+    bool prevIsBFS;
    
 public:
     ActorGraph(void);

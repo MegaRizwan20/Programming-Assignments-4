@@ -149,51 +149,56 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
       return ret;
     }
 
-    // Use the Dijkstra algorithm to find the path
-    std::priority_queue< std::pair<int, ActorNode *>, std::vector<std::pair<int, ActorNode *>>, compareInQueue > queue;
-    for (auto it = allNodes.begin(); it != allNodes.end(); it++)
+    if (prevSearch != start || end->prev == nullptr || prevIsBFS == true)
     {
-        v = *it;
-        v->dist = INT_MAX;
-        v->prev = nullptr;
-        v->done = false;
-    }
-
-    start->dist = 0;
-    queue.push( make_pair(start->dist, start) );
-
-    while (!queue.empty())
-    {
-        std::pair<int, ActorNode *> curr = queue.top();
-        queue.pop();
-        int weight = curr.first;
-        v = curr.second;
-
-        if (v->done == false)
+        prevSearch = start;
+        prevIsBFS = false;
+        // Use the Dijkstra algorithm to find the path
+        std::priority_queue< std::pair<int, ActorNode *>, std::vector<std::pair<int, ActorNode *>>, compareInQueue > queue;
+        for (auto it = allNodes.begin(); it != allNodes.end(); it++)
         {
-            v->done = true;
-
-            // IMPORTANT: put "true" in this parameter to make the edges weighted
-            neighbors = v->getAdjacentNodes(weighted);
-
-            for (int i = 0; i < neighbors.size(); i++)
-            {
-                // don't need to add neighbors that are already searched
-                if (neighbors[i].first->done == true) continue;
-
-                // find the total distance to get to the new neighbor
-                int c = v->dist + neighbors[i].second;
-                if (c < neighbors[i].first->dist)
-                {
-                    neighbors[i].first->prev = v;
-                    neighbors[i].first->dist = c;
-                    queue.push( std::make_pair( c, neighbors[i].first ) );
-                }
-            }
+            v = *it;
+            v->dist = INT_MAX;
+            v->prev = nullptr;
+            v->done = false;
         }
 
-        // found the path to the end. stop.
-        if (v == end) break;
+        start->dist = 0;
+        queue.push( make_pair(start->dist, start) );
+
+        while (!queue.empty())
+        {
+            std::pair<int, ActorNode *> curr = queue.top();
+            queue.pop();
+            int weight = curr.first;
+            v = curr.second;
+
+            if (v->done == false)
+            {
+                v->done = true;
+
+                // IMPORTANT: put "true" in this parameter to make the edges weighted
+                neighbors = v->getAdjacentNodes(weighted);
+
+                for (int i = 0; i < neighbors.size(); i++)
+                {
+                    // don't need to add neighbors that are already searched
+                    if (neighbors[i].first->done == true) continue;
+
+                    // find the total distance to get to the new neighbor
+                    int c = v->dist + neighbors[i].second;
+                    if (c < neighbors[i].first->dist)
+                    {
+                        neighbors[i].first->prev = v;
+                        neighbors[i].first->dist = c;
+                        queue.push( std::make_pair( c, neighbors[i].first ) );
+                    }
+                }
+            }
+
+            // found the path to the end. stop.
+            if (v == end) break;
+        }
     }
 
   	if (end->prev == nullptr)
@@ -256,6 +261,8 @@ int ActorGraph::bfsMin( std::string start_name, std::string end_name )
       return retYear;
     }
 
+    prevIsBFS = true;
+
     // perform a bfs search from the start node to the end node
     std::priority_queue< std::pair<ActorNode *, int>, 
         std::vector<std::pair<ActorNode *, int>>, compareYears> queue;
@@ -268,10 +275,12 @@ int ActorGraph::bfsMin( std::string start_name, std::string end_name )
     }
     
     queue.push( make_pair(start, 0) );
+    ActorNode * curr = nullptr;
     while ( !queue.empty() )
     {
         // get the top element of the queue
-        ActorNode * curr = queue.top().first;
+        queue.top().first->prev = curr;
+        curr = queue.top().first;
         int year = queue.top().second;
         if (curr->prev == nullptr)
         {
@@ -312,7 +321,6 @@ int ActorGraph::bfsMin( std::string start_name, std::string end_name )
                 if ( ! neighbors[i].first->done )
                 {
                     queue.push( neighbors[i] );
-                    neighbors[i].first->prev = curr;
                 }
             }
         }
