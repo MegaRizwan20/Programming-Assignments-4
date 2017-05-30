@@ -14,13 +14,6 @@ MovieList::MovieList()
 {
   // Unsure if we need to do anything in the constructor
   listOfGraphs = set<MovieGraph* , compareGraphs>();
-  disjoint = false;
-}
-
-MovieList::MovieList(bool p_disjoint)
-{
-  listOfGraphs = set<MovieGraph* , compareGraphs>();
-  disjoint = p_disjoint;
 }
 
 // Destructor: Destruct all the MovieGraphs
@@ -39,7 +32,7 @@ MovieList::~MovieList()
 // Add an actorNode to one of the graphs
 void MovieList::addActorNode( ActorNode * node, std::string movieName, int movieYear )
 {
-  MovieGraph * tempGraph = new MovieGraph(movieName, movieYear, disjoint);
+  MovieGraph * tempGraph = new MovieGraph(movieName, movieYear);
   auto pair = listOfGraphs.insert( tempGraph );
   
   // delete if not inserted
@@ -58,7 +51,7 @@ void MovieList::addActorNode( ActorNode * node, std::string movieName, int movie
 MovieGraph * MovieList::searchGraph( std::string movieName, int movieYear ) const
 {
   // Make an empty MovieGraph Instance
-  MovieGraph temp(movieName, movieYear, disjoint);
+  MovieGraph temp(movieName, movieYear);
   MovieGraph * tempSearch = &temp;
   
   // Make an iterator to look for graph
@@ -86,6 +79,7 @@ MovieGraph * MovieList::searchGraph( std::string movieName, int movieYear ) cons
 // Do this for each element in the set
 void MovieList::makeAllEdges ()
 {
+  cout << "Making the edges!" << endl;
   MovieGraph* edgeMake;
   // Iterator for going through the set
   std::set<MovieGraph*, compareGraphs>::iterator it3;

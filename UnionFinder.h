@@ -1,5 +1,5 @@
 /*
- * ActorGraph.h
+ * UnionFinder.h
  * Author: <YOUR NAME HERE>
  * Date:   <DATE HERE>
  *
@@ -7,8 +7,8 @@
  * defined in movie_casts.tsv. Feel free to modify any/all aspects as you wish.
  */
 
-#ifndef ACTORGRAPH_H
-#define ACTORGRAPH_H
+#ifndef UNIONFINDER_H
+#define UNIONFINDER_H
 
 #include <iostream>
 #include <fstream>
@@ -17,18 +17,12 @@
 #include <vector>
 #include <utility>
 #include <set>
-#include <stack>
 
 #include "ActorNode.h"
 #include "ActorEdge.h"
-#include "ActorPath.h"
 #include "MovieList.h"
 #include "MovieName.h"
 #include "MovieGraph.h"
-
-// Maybe include some data structures here
-
-using namespace std;
 
 class compareNodes {
 public:
@@ -38,35 +32,9 @@ public:
     }
 };
 
-class comparePaths {
-public:
-    bool operator() ( ActorPath lhs, ActorPath rhs ) const
-    {
-        return lhs.getEndNode() < rhs.getEndNode();
-    }
-};
-
-class compareInQueue {
-public:
-    bool operator() ( std::pair<int, ActorNode *> lhs, std::pair<int, ActorNode *> rhs) const
-    {
-        return lhs.first > rhs.first;
-    }
-};
-
-class compareYears {
-public:
-    bool operator() ( std::pair<ActorNode *, int> lhs, std::pair<ActorNode *, int> rhs ) const
-    {
-        return lhs.second > rhs.second;
-    }
-};
-
-class ActorGraph {
+class UnionFinder {
 protected:
   
-    // Maybe add class data structure(s) here
-    bool weighted;
 
     // This defines a set of pairs, each containing a node (the starting node) and the set of
     // found paths.
@@ -76,13 +44,12 @@ protected:
     // the MovieName instances get deleted once and once only
     std::vector< MovieName *> allMovies;
 
-    // store previously searched paths to make the next search faster if its the same starting actor
-    ActorNode * prevSearch;
-    bool prevIsBFS;
+    // stores the set of moviegraphs that each act as a disjoint set before they are connected
+    MovieList movieList;
    
 public:
-    ActorGraph(void);
-    ~ActorGraph();
+    UnionFinder(void);
+    ~UnionFinder();
 
     // Maybe add some more methods here
   
@@ -91,22 +58,17 @@ public:
      * Load the graph from a tab-delimited file of actor->movie relationships.
      *
      * in_filename - input filename
-     * use_weighted_edges - if true, compute edge weights as 1 + (2015 - movie_year), otherwise all edge weights will be 1
      *
      * return true if file was loaded sucessfully, false otherwise
      */
-    bool loadFromFile(const char* in_filename, bool use_weighted_edges);
-
-    // Find the shortest path from the starting node and ends up at the ending node
-    ActorPath * findPath( std::string start_name, std::string end_name ) ;
+    bool loadFromFile(const char* in_filename);
 
     // print the number of nodes, edges and movies in the graph
     void printStats( ostream& out ) const;
 
-    // perform a bfs search for the smallest year in which 2 actors are connected
-    int bfsMin( std::string start_name, std::string end_name);
-
+    // print all the actor names and the earliest year in which they are connected to the output stream
+    void printAllYears( std::vector< std::pair< std::string, std::string> >, ostream& out );
 };
 
 
-#endif // ACTORGRAPH_H
+#endif // UNIONFINDER_H

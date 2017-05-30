@@ -59,7 +59,7 @@ public:
 
     // Perform the Union operation
     // This function assumes that 'this' node is in a set with
-    // an equal or greater height than the set of the input node
+    // an equal or lower height than the set of the input node
     void unionWith( ActorNode * u_node, MovieName * p_name );
    
     // Some member variables that can be used in a Dijkstra's algorithm

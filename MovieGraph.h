@@ -34,7 +34,7 @@ class MovieGraph
   public:
 
    // The constructor
-   MovieGraph(string movieNames, int year, bool p_disjoint);
+   MovieGraph(string movieNames, int year);
    // The destructor
    ~MovieGraph();
 

@@ -15,14 +15,6 @@ ActorGraph::ActorGraph(void)
 {
     allNodes = set< ActorNode *, compareNodes >();
     prevSearch = nullptr;
-    disjoint = false;
-}
-
-ActorGraph::ActorGraph(bool p_disjoint)
-{
-    allNodes = set< ActorNode *, compareNodes >();
-    prevSearch = nullptr;
-    disjoint = p_disjoint;
 }
 
 ActorGraph::~ActorGraph() 
@@ -62,7 +54,7 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges)
 
     bool have_header = false;
 
-    MovieList movieList(disjoint);
+    MovieList movieList;
   
     // keep reading lines until the end of file is reached
     while (infile) {
@@ -336,59 +328,4 @@ int ActorGraph::bfsMin( std::string start_name, std::string end_name )
     }
 
     return retYear;
-}
-
-int ActorGraph::unionFind( std::string start_name, std::string end_name )
-{
-    ActorNode * start = new ActorNode(start_name);
-    ActorNode * end = new ActorNode(end_name);
-    ActorNode * v;
-    std::vector< std::pair< ActorNode *, int > > neighbors;
-    int weight;
-    auto it_start = allNodes.find( start );
-    auto it_end = allNodes.find( end );
-    int retYear = 0;
-    delete start;
-    delete end;
-  
-    if (it_start == allNodes.end() || it_end == allNodes.end())
-    {
-      	cout << "One or both of these actor names do not exist!" << endl;
-        return retYear;
-    }
-
-    start = *it_start;
-    end = *it_end;
-
-    // Path is already complete if the start and end nodes are the same
-    if (start == end) 
-    {
-      return retYear;
-    }
-
-    ActorNode * start_set = start;
-    ActorNode * end_set = end;
-    int year;
-    while (start_set->getNumEdges() != 0)
-    {
-        year = start_set->getFirstEdge()->getMovieName()->getYear();
-        if (year > retYear)
-        {
-            retYear = year;
-        }
-        start_set = start_set->getFirstEdge()->getNextNode();
-    }
-
-    while (end_set->getNumEdges() != 0)
-    {
-        year = end_set->getFirstEdge()->getMovieName()->getYear();
-        if (year > retYear)
-        {
-            retYear = year;
-        }
-        end_set = end_set->getFirstEdge()->getNextNode();
-    }
-
-    if (start_set == end_set) return retYear;
-    else return 9999;
 }

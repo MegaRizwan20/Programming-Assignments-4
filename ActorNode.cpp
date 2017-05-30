@@ -120,23 +120,27 @@ void ActorNode::unionWith( ActorNode * ufind, MovieName * p_name)
 {
     ActorNode * this_set = this;
     ActorNode * u_set = ufind;
-    while (this_set->getNumEdges() != 0)
+     
+    while (this_set->getNumEdges() == 1)
     {
         this_set = this_set->getFirstEdge()->getNextNode();
-        if (this_set->getNumEdges() > 1)
+        if (this_set->getNumEdges() == 0)
         {
-            std::cerr << "UNEXPECTED ERROR!" << std::endl;
+            std::cerr << "Sentinel node found" << std::endl;
         }
     }
     
-    while (u_set->getNumEdges() != 0)
+    while (u_set->getNumEdges() == 1)
     {
         u_set = u_set->getFirstEdge()->getNextNode();
-        if (u_set->getNumEdges() > 1)
+        if (u_set->getNumEdges() == 0)
         {
-            std::cerr << "UNEXPECTED ERROR!" << std::endl;
+            std::cerr << "Sentinel node found" << std::endl;
         }
     }
-
-    u_set->addEdge( this_set, p_name );
+    
+    if (this_set != u_set )
+    {
+        this_set->addEdge( u_set, p_name );
+    }
 }

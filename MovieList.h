@@ -26,7 +26,6 @@ public:
     
     // Constructor
     MovieList();    // by default disjoint is false;
-    MovieList(bool p_disjoint);
    
     // Destructor: Destruct all the MovieGraphs
     ~MovieList();
@@ -66,7 +65,6 @@ private:
    
     // store the list of moviegraphs
     std::set<MovieGraph *, compareGraphs> listOfGraphs;
-    bool disjoint;
 };
 
    

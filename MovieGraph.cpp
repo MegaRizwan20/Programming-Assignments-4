@@ -11,48 +11,13 @@
 
 void MovieGraph::makeEdges() 
 {
-    if (!disjoint)
+    for (int i = 0; i < listOfActors.size(); i++)
     {
-        for (int i = 0; i < listOfActors.size(); i++)
+        for (int j = 0; j < listOfActors.size(); j++)
         {
-            for (int j = 0; j < listOfActors.size(); j++)
+            if (i != j)
             {
-                if (i != j)
-                {
-                    listOfActors[i]->addEdge(listOfActors[j], name);
-                }
-            }
-        }
-    }
-    else
-    {
-        // find a node to be the sentinel node
-        int sentinel = -1;
-        for (int i = 0; i < listOfActors.size(); i++)
-        {
-            if (listOfActors[i]->getNumEdges() == 0)
-            {
-                sentinel = i;
-                break;
-            }
-        }
-
-        // if there is at  least 1 node with no edges yet
-        if (sentinel != -1)
-        {
-            for (int i = 0; i < listOfActors.size(); i++)
-            {
-                if (listOfActors[i]->getNumEdges() == 0)
-                {
-                    listOfActors[i]->addEdge(listOfActors[sentinel], name);
-                }
-                else
-                {
-                    if (listOfActors[sentinel]->getNumEdges() == 0)
-                    {
-                        listOfActors[sentinel]->unionWith(listOfActors[i], name);
-                    }
-                }
+                listOfActors[i]->addEdge(listOfActors[j], name);
             }
         }
     }
@@ -60,7 +25,7 @@ void MovieGraph::makeEdges()
 
 
 // The constructor
-MovieGraph::MovieGraph(string movieNames, int year, bool p_disjoint)
+MovieGraph::MovieGraph(string movieNames, int year)
 {
   // Should set the name of the movie name equal to the movieNames
   //name->movieName = movieNames;
@@ -71,7 +36,6 @@ MovieGraph::MovieGraph(string movieNames, int year, bool p_disjoint)
 
   name = new MovieName(movieNames, year);
   listOfActors = vector<ActorNode *>();
-  disjoint = p_disjoint;
 }
 
 // The destructor

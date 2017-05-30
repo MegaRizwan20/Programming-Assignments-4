@@ -79,18 +79,6 @@ int main (int argc, char* argv[])
         disjoint = true;
     }
 
-    ActorGraph graph(disjoint);
-  
-  	// Load graph from the input file
-    std::cout << "Loading from file, this might take a while..." << std::endl;
-    if ( !graph.loadFromFile( argv[1], false ) )
-    {
-      cerr << USAGE;
-      return -1;
-    }
-    graph.printStats(cout);
-    cout << "done!" << endl;
-  	
   	// initialize pair input and output files
     ifstream infile(argv[2]);
     ofstream outfile(argv[3]);
@@ -100,6 +88,7 @@ int main (int argc, char* argv[])
 
     // output file header;
     outfile << "actor1\tactor2\tyear" << endl;
+    vector< std::pair< std::string, std::string> > listOfPairs;
   
     // Read lines until we reach the end of the file
     while (infile)
@@ -141,24 +130,8 @@ int main (int argc, char* argv[])
       // The names of the 2 actors
       string actor1(record[0]);
       string actor2(record[1]);
-      int year;
-      if (disjoint)
-      {
-        year = graph.unionFind(actor1, actor2);
-      }
-      else
-      {
-        year = graph.bfsMin( actor1, actor2 );
-      }
+      listOfPairs.push_back(make_pair(actor1, actor2));
    
-      if (year == 9999)
-      {
-        cerr << " Path is not found for the pair (" << actor1 << ") -> (" << actor2 << ")" <<endl;
-      }
-      else
-      {
-        cout << "Found year is: " << year << endl;
-      }
     // End of outer while loop 
     }
 
