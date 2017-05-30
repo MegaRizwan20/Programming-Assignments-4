@@ -30,7 +30,7 @@ actorconnections: actorconnections.cpp UnionFinder.o ActorNode.o ActorEdge.o Act
 
 ActorGraph.o: ActorNode.h ActorEdge.h ActorGraph.h ActorPath.h MovieList.h MovieGraph.h MovieName.h
 
-UnionFinder.o: ActorNode.h ActorEdge.h ActorGraph.h MovieList.h MovieGraph. MovieName.h
+UnionFinder.o: ActorNode.h ActorEdge.h ActorGraph.h MovieList.h MovieGraph.h MovieName.h
 
 ActorNode.o: ActorNode.h ActorEdge.h MovieName.h
 
