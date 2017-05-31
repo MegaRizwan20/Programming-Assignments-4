@@ -7,7 +7,15 @@ UnionFinder::UnionFinder(void)
 
 UnionFinder::~UnionFinder()
 {
+    for (int i = 0; i < allMovies.size(); i++)
+    {
+        delete allMovies[i];
+    }
 
+    for (auto it = allNodes.begin(); it != allNodes.end(); it++)
+    {
+        delete *it;
+    }
 }
 
 // Maybe add some more methods here
@@ -210,7 +218,6 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
                 if (pointerPairs[i].first->unionFind(pointerPairs[i].second))
                 {
                     allFoundYears[i] = *it_year;
-                    cout << pairs[i].first << "\t" << pairs[i].second << "\t" << allFoundYears[i] << endl;
                 }
             }
         }
