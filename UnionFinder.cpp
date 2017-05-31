@@ -103,7 +103,8 @@ void UnionFinder::printStats( ostream& out ) const
     out << "#nodes: " << allNodes.size() << std::endl;
     out << "#movies: " << allMovies.size() << std::endl;
   
-  /* Just used to generate a random test pairs file
+  /* ------------------------------------------------------
+  * This is just used to generate a random test pairs file
    ofstream file;
   file.open( "many_pairs.tsv" );
   file << "actor1\tactor2\n";
@@ -121,7 +122,7 @@ void UnionFinder::printStats( ostream& out ) const
    	string actor2 = (*it)->getActorName();
     file << actor1 << "\t" << actor2 << "\n" ;
   }
-  */
+  *----------------------------------------------------------- */
 }
 
 // print all the actor names and the earliest year in which they are connected to the output stream
@@ -249,7 +250,8 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
         it_year++;
     }
 
-    for (int i = 0; i < allFoundYears[i]; i++)
+  	
+    for (int i = 0; i < allFoundYears.size(); i++)
     {
         // none is found if it is still 0 by now
         if (allFoundYears[i] == 0) allFoundYears[i] = 9999;
