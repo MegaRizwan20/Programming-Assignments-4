@@ -233,9 +233,21 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
     return ret;
 }
 
-// For this part, we might need the graph to become a minimum spanning tree first
+// For this part, we will need to keep a 'year' counter and keep using bfs to
+// search a path before the counter, and if a path is not found, 'increment'
+// the counter appropriately and repeat the search.
+// For efficiency, don't increment 'year' one by one, but rather by asking
+// 'what is the next smallest year of all the movies'
+// Do some preprosessing first: keep a list of the all the years available,
+// sorted by size (probably by using a set)
+// Then, do a bfs and add the edges onto the queue only if 
+// 		1. it is not added already
+//		2. the edge connecting the nodes points to a movie that is produced
+//			before or during the 'year' counter indicated.
 int ActorGraph::bfsMin( std::string start_name, std::string end_name )
 {
+  
+  /* ----------------- This is not right -----------------------------
     ActorNode * start = new ActorNode(start_name);
     ActorNode * end = new ActorNode(end_name);
     ActorNode * v;
@@ -328,4 +340,6 @@ int ActorGraph::bfsMin( std::string start_name, std::string end_name )
     }
 
     return retYear;
+  
+  * --------------------------------------------------------------------- */
 }
