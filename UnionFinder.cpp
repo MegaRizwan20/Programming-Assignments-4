@@ -175,7 +175,6 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
     while (it_year != allYears.end() )
     {
         // create the disjoint sets of all the movies before the current year
-        //cout << "Looping in year: " << *it_year << endl;
         while (it_graph != movieList.listOfGraphs.end() && (*it_graph)->getMovieYear() == *it_year )
         {
             curr = *it_graph;
@@ -195,7 +194,6 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
             // have all the lone actor nodes point to the sentinel node
             if (sentinel != -1)
             {
-                //cout << "stuck here" << endl;
                 for (int i = 0; i < curr->listOfActors.size(); i++)
                 {
                     if ( curr->listOfActors[i]->prev == nullptr && curr->listOfActors[i]->getFirstEdge() == nullptr)
@@ -221,7 +219,6 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
             // have all the sets union with each other if possible
             else
             {
-                //cout << "stuck here 2" << endl;
                 for (int i = 0; i < curr->listOfActors.size(); i++)
                 {
                     for (int j = i+1; j < curr->listOfActors.size(); j++)
@@ -234,8 +231,7 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
             it_graph++;
         }
         
-        //cout << "done with previous year!" << endl;
-
+        bool allFound = true;
         for (int i = 0; i < pairs.size(); i++)
         {
             if (allFoundYears[i] == 0)
@@ -244,8 +240,13 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
                 {
                     allFoundYears[i] = *it_year;
                 }
+                else
+                {
+                    allFound = false;
+                }
             }
         }
+        if (allFound) break;
 
         it_year++;
     }

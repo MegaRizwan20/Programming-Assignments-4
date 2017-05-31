@@ -88,7 +88,7 @@ int main (int argc, char* argv[])
     bool header_check = false;
 
     // output file header;
-    outfile << "actor1\tactor2\tyear" << endl;
+    outfile << "Actor1\tActor2\tYear" << endl;
     vector< std::pair< std::string, std::string> > listOfPairs;
   
     // Read lines until we reach the end of the file
@@ -143,7 +143,6 @@ int main (int argc, char* argv[])
         ufind.loadFromFile(argv[1]);
         cout << "done!" << endl;
         ufind.printStats(cout);
-        ufind.printAllYears( listOfPairs, outfile );
         ufind.printAllYears( listOfPairs, outfile );
     }
 
