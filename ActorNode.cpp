@@ -117,20 +117,40 @@ ActorEdge * ActorNode::getFirstEdge() const
     return edges[0];
 }
 
-bool ActorNode::unionFind( ActorNode * ufind ) const
+bool ActorNode::unionFind( ActorNode * ufind )
 {
-    const ActorNode * this_set = this;
-    const ActorNode * u_set = ufind;
+    ActorNode * this_set = this;
+    ActorNode * u_set = ufind;
+  
+  	// stacks for implementing path compression
+  	std::stack<ActorNode *> st;
      
-    // find the sentinel node of each set
+    // find the sentinel node of this_set
     while (this_set->prev != nullptr)
     {
+      	st.push(this_set);
         this_set = this_set->prev;
     }
+  
+  	// perform path compression for this_set
+  	while (!st.empty())
+    {
+        (st.top())->prev = this_set;
+        st.pop();
+    }
     
+  	// find the sentinel node of u_set
     while (u_set->prev != nullptr)
     {
+        st.push(u_set);
         u_set = u_set->prev;
+    }
+  
+  	// perform path compression for u_set
+    while (!st.empty())
+    {
+        (st.top())->prev = u_set;
+        st.pop();
     }
     
     // already in the same set, so quit

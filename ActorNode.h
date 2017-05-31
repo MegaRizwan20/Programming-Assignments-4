@@ -16,6 +16,7 @@
 #include <set>
 #include <utility>
 #include <limits.h>
+#include <stack>
    
 #include "ActorEdge.h"
 #include "MovieName.h"
@@ -61,7 +62,7 @@ public:
     void unionWith( ActorNode * u_node, MovieName * p_name );
 
     // Perform the Union find operation to see if they are in the same set
-    bool unionFind( ActorNode * u_node ) const;
+    bool unionFind( ActorNode * u_node );
    
    	void clearEdges();
    
