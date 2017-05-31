@@ -1,4 +1,7 @@
 #include "UnionFinder.h"
+#include <fstream>
+#include <stdlib.h>
+#include <time.h>
 
 UnionFinder::UnionFinder(void)
 {
@@ -99,6 +102,26 @@ void UnionFinder::printStats( ostream& out ) const
 {
     out << "#nodes: " << allNodes.size() << std::endl;
     out << "#movies: " << allMovies.size() << std::endl;
+  
+  /* Just used to generate a random test pairs file
+   ofstream file;
+  file.open( "many_pairs.tsv" );
+  file << "actor1\tactor2\n";
+  srand (time(NULL));
+  for (int i = 0; i < 1000; i++)
+  {
+    int random = rand() % allNodes.size();
+    auto it = allNodes.begin();
+    std::advance(it, random);
+   	string actor1 = (*it)->getActorName();
+    
+    random = rand() % allNodes.size();
+    it = allNodes.begin();
+    std::advance(it, random);
+   	string actor2 = (*it)->getActorName();
+    file << actor1 << "\t" << actor2 << "\n" ;
+  }
+  */
 }
 
 // print all the actor names and the earliest year in which they are connected to the output stream
@@ -145,6 +168,7 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
     for (auto it = allNodes.begin(); it != allNodes.end(); it++)
     {
         (*it)->prev = nullptr;
+      	(*it)->clearEdges();
     }
 
     while (it_year != allYears.end() )

@@ -192,3 +192,13 @@ void ActorNode::unionWith( ActorNode * ufind, MovieName * p_name)
         this_set->addEdge(u_set, p_name);
     }
 }
+
+void ActorNode::clearEdges()
+{
+    for (auto it = edges.begin();
+        it != edges.end(); ++it)
+    {
+        delete *it;
+    }
+    edges.clear();
+}

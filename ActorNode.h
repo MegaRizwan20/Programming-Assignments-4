@@ -63,6 +63,8 @@ public:
     // Perform the Union find operation to see if they are in the same set
     bool unionFind( ActorNode * u_node ) const;
    
+   	void clearEdges();
+   
     // Some member variables that can be used in a Dijkstra's algorithm
     int dist;
     ActorNode * prev;

@@ -144,6 +144,7 @@ int main (int argc, char* argv[])
         cout << "done!" << endl;
         ufind.printStats(cout);
         ufind.printAllYears( listOfPairs, outfile );
+        ufind.printAllYears( listOfPairs, outfile );
     }
 
   	// if the loop is broken out before eof is reached, exit with failure
