@@ -23,6 +23,7 @@ int main (int argc, char* argv[])
     {
       std::cerr << "Incorrect number of inputs!" << std::endl;
       std::cerr << USAGE;
+      return -1;
     }
   
     // Check input and output file validity

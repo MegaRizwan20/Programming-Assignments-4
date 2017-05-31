@@ -113,7 +113,28 @@ std::vector< std::pair<ActorNode *, int> > ActorNode::getNodesAndYears() const
 
 ActorEdge * ActorNode::getFirstEdge() const 
 {
+    if (edges.size() == 0) return nullptr;
     return edges[0];
+}
+
+bool ActorNode::unionFind( ActorNode * ufind ) const
+{
+    const ActorNode * this_set = this;
+    const ActorNode * u_set = ufind;
+     
+    // find the sentinel node of each set
+    while (this_set->prev != nullptr)
+    {
+        this_set = this_set->prev;
+    }
+    
+    while (u_set->prev != nullptr)
+    {
+        u_set = u_set->prev;
+    }
+    
+    // already in the same set, so quit
+    return this_set == u_set;
 }
 
 void ActorNode::unionWith( ActorNode * ufind, MovieName * p_name) 
@@ -121,26 +142,53 @@ void ActorNode::unionWith( ActorNode * ufind, MovieName * p_name)
     ActorNode * this_set = this;
     ActorNode * u_set = ufind;
      
-    while (this_set->getNumEdges() == 1)
+    // find the sentinel node of each set
+    while (this_set->prev != nullptr)
     {
-        this_set = this_set->getFirstEdge()->getNextNode();
-        if (this_set->getNumEdges() == 0)
-        {
-            std::cerr << "Sentinel node found" << std::endl;
-        }
+        this_set = this_set->prev;
     }
     
-    while (u_set->getNumEdges() == 1)
+    while (u_set->prev != nullptr)
     {
-        u_set = u_set->getFirstEdge()->getNextNode();
-        if (u_set->getNumEdges() == 0)
-        {
-            std::cerr << "Sentinel node found" << std::endl;
-        }
+        u_set = u_set->prev;
     }
     
-    if (this_set != u_set )
+    // already in the same set, so quit
+    if (this_set == u_set )
     {
-        this_set->addEdge( u_set, p_name );
+        return;    
+    }
+
+    // Find the height of each set
+    int this_height = 0;
+    int u_height = 0;
+    ActorNode * curr = this_set;
+
+    // traverse down the this_set to find its height
+    while (curr->getFirstEdge() != nullptr)
+    {
+        curr = curr->getFirstEdge()->getNextNode();
+        this_height++;
+    }
+
+    // traverse down the u_set to find its height
+    curr = u_set;
+    while (curr->getFirstEdge() != nullptr)
+    {
+        curr = curr->getFirstEdge()->getNextNode();
+        u_height++;
+    }
+
+    // union the sets by having the sentinel node of the
+    // smaller height point to the other sentinel node
+    if (this_height < u_height)
+    {
+        this_set->prev = u_set;
+        u_set->addEdge(this_set, p_name);
+    }
+    else
+    {
+        u_set->prev = this_set;
+        this_set->addEdge(u_set, p_name);
     }
 }

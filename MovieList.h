@@ -19,8 +19,12 @@
 #include "MovieName.h"
 
 using namespace std;
+
+class UnionFinder;
    
 class MovieList{
+
+    friend class UnionFinder;
    
 public:
     
@@ -53,7 +57,7 @@ private:
    	    {
             if ( lhs->getMovieYear() != rhs->getMovieYear() )
             {
-                return lhs->getMovieYear() > rhs->getMovieYear();
+                return lhs->getMovieYear() < rhs->getMovieYear();
             }
 
             std::string sl = lhs->getMovieName();

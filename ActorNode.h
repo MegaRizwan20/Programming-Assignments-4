@@ -58,9 +58,10 @@ public:
     ActorEdge * getFirstEdge() const;
 
     // Perform the Union operation
-    // This function assumes that 'this' node is in a set with
-    // an equal or lower height than the set of the input node
     void unionWith( ActorNode * u_node, MovieName * p_name );
+
+    // Perform the Union find operation to see if they are in the same set
+    bool unionFind( ActorNode * u_node ) const;
    
     // Some member variables that can be used in a Dijkstra's algorithm
     int dist;

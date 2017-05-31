@@ -5,13 +5,13 @@
 #include <string.h>
 #include <errno.h>
 
-#include "ActorGraph.h"
+#include "UnionFinder.h"
 #include "ActorNode.h"
 #include "ActorEdge.h"
 #include "ActorPath.h"
 #include "MovieName.h"
 
-#define USAGE "Usage: ./pathfinder 3_column_file.tsv 2_column_file.tsv output_file [bfs/ufind]\n" 
+#define USAGE "Usage: ./actorconnections 3_column_file.tsv 2_column_file.tsv output_file [bfs/ufind]\n" 
 using namespace std;
 
 // for temporary testing
@@ -23,6 +23,7 @@ int main (int argc, char* argv[])
     {
       std::cerr << "Incorrect number of inputs!" << std::endl;
       std::cerr << USAGE;
+      return -1;
     }
   
     // Check input and output file validity
@@ -133,6 +134,16 @@ int main (int argc, char* argv[])
       listOfPairs.push_back(make_pair(actor1, actor2));
    
     // End of outer while loop 
+    }
+
+    if (disjoint)
+    {
+        UnionFinder ufind;
+        cout << "Loading \"" << argv[1] << "\"..." << flush;
+        ufind.loadFromFile(argv[1]);
+        cout << "done!" << endl;
+        ufind.printStats(cout);
+        ufind.printAllYears( listOfPairs, outfile );
     }
 
   	// if the loop is broken out before eof is reached, exit with failure

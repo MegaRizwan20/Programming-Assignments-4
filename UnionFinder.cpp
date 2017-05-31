@@ -86,23 +86,143 @@ bool UnionFinder::loadFromFile(const char* in_filename)
     return true; 
 }
 
-// print the number of nodes, edges and movies in the graph
+// print the number of nodes and movies in the graph
 void UnionFinder::printStats( ostream& out ) const
 {
     out << "#nodes: " << allNodes.size() << std::endl;
     out << "#movies: " << allMovies.size() << std::endl;
-  	int sum = 0;
-    for (auto it = allNodes.begin(); it != allNodes.end(); it++)
-    {
-      sum += (*it)->getNumEdges();
-    }	
-  
-  	out << "#edges: " << sum << std::endl;
 }
 
 // print all the actor names and the earliest year in which they are connected to the output stream
-void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::string> >, ostream& out )
+void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::string> > pairs, ostream& out )
 {
+    // initialize a vector of found years
+    std::vector<int> allFoundYears( pairs.size(), 0 );
+    std::vector< std::pair< ActorNode *, ActorNode *> > pointerPairs;
+    for (int i = 0; i < pairs.size(); i++)
+    {
+        ActorNode * start = new ActorNode( pairs[i].first );
+        ActorNode * end = new ActorNode( pairs[i].second );
+        auto it_start = allNodes.find( start );
+        auto it_end = allNodes.find( end );
+        delete start;
+        delete end;
 
+        if (it_start == allNodes.end() || it_end == allNodes.end())
+        {
+            allFoundYears[i] = 9999;
+            pointerPairs.push_back( make_pair(nullptr, nullptr) );
+        }
+        else
+        {
+            start = *it_start;
+            end = *it_end;
+            pointerPairs.push_back( make_pair(start, end) );
+        }
+    }
+
+
+    // Preprocess all the years
+    std::set<int> allYears;
+    for (int i = 0; i < allMovies.size(); i++)
+    {
+        allYears.insert(allMovies[i]->getYear());
+    }
+
+    auto it_year = allYears.begin();
+    auto it_graph = movieList.listOfGraphs.begin();
+    MovieGraph * curr;
+
+    // initialize all prev fields to be nullptr
+    for (auto it = allNodes.begin(); it != allNodes.end(); it++)
+    {
+        (*it)->prev = nullptr;
+    }
+
+    while (it_year != allYears.end() )
+    {
+        // create the disjoint sets of all the movies before the current year
+        //cout << "Looping in year: " << *it_year << endl;
+        while (it_graph != movieList.listOfGraphs.end() && (*it_graph)->getMovieYear() == *it_year )
+        {
+            curr = *it_graph;
+
+            // find a sentinel node (not in any set already), if there is 1
+            int sentinel = -1;
+            ActorNode * node;
+            for (int i = 0; i < curr->listOfActors.size(); i++)
+            {
+                if (curr->listOfActors[i]->prev == nullptr && curr->listOfActors[i]->getFirstEdge() == nullptr)
+                {
+                    sentinel = i;
+                    break;
+                }
+            }
+
+            // have all the lone actor nodes point to the sentinel node
+            if (sentinel != -1)
+            {
+                //cout << "stuck here" << endl;
+                for (int i = 0; i < curr->listOfActors.size(); i++)
+                {
+                    if ( curr->listOfActors[i]->prev == nullptr && curr->listOfActors[i]->getFirstEdge() == nullptr)
+                    {
+                        if ( curr->listOfActors[i] != curr->listOfActors[sentinel] )
+                        {
+                            curr->listOfActors[i]->prev = curr->listOfActors[sentinel];
+                            curr->listOfActors[sentinel]->addEdge(curr->listOfActors[i], curr->getMoviePointer());
+                        }
+                    }
+                    
+                    // union with nodes that already belong to another set
+                    else
+                    {
+                        if (i != sentinel)
+                        {
+                            curr->listOfActors[sentinel]->unionWith(curr->listOfActors[i], curr->getMoviePointer());
+                        }
+                    }
+                }
+            }
+
+            // have all the sets union with each other if possible
+            else
+            {
+                //cout << "stuck here 2" << endl;
+                for (int i = 0; i < curr->listOfActors.size(); i++)
+                {
+                    for (int j = i+1; j < curr->listOfActors.size(); j++)
+                    {
+                        curr->listOfActors[i]->unionWith(curr->listOfActors[j], curr->getMoviePointer());
+                    }
+                }
+            }
+
+            it_graph++;
+        }
+        
+        //cout << "done with previous year!" << endl;
+
+        for (int i = 0; i < pairs.size(); i++)
+        {
+            if (allFoundYears[i] == 0)
+            {
+                if (pointerPairs[i].first->unionFind(pointerPairs[i].second))
+                {
+                    allFoundYears[i] = *it_year;
+                    cout << pairs[i].first << "\t" << pairs[i].second << "\t" << allFoundYears[i] << endl;
+                }
+            }
+        }
+
+        it_year++;
+    }
+
+    for (int i = 0; i < allFoundYears[i]; i++)
+    {
+        // none is found if it is still 0 by now
+        if (allFoundYears[i] == 0) allFoundYears[i] = 9999;
+        out << pairs[i].first << "\t" << pairs[i].second << "\t" << allFoundYears[i] << "\n";
+    }
 }
 
