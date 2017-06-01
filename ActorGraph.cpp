@@ -13,7 +13,6 @@ using namespace std;
 
 ActorGraph::ActorGraph(void) 
 {
-    allNodes = set< ActorNode *, compareNodes >();
     prevSearch = nullptr;
 }
 

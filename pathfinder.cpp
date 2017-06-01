@@ -147,8 +147,13 @@ int main (int argc, char* argv[])
       else
       {
         cout << "Computing path for (" << actor1 << ") -> (" << actor2 << ")" <<endl;
-        int year = graph.bfsMin( actor1, actor2 );
-        cout << "Found year is: " << year << endl;
+        
+        /* delete the following code after bfsmin code is correctly implemented */
+        /* -------------------------------------------------------------------- */
+        //int year = graph.bfsMin( actor1, actor2 );
+        //cout << "Found year is: " << year << endl;
+        /* -------------------------------------------------------------------- */
+        
         twoActors->printPath(outfile);
         delete twoActors;
       }
