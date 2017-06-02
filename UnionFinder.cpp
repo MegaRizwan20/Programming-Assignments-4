@@ -319,7 +319,7 @@ void UnionFinder::bfsAllPairs( std::vector< std::pair< std::string, std::string>
         delete end;
 
         // if either name is not in the list, make it 9999 
-        if (it_start == allNodes.end() || it_end == allNodes.end())
+        if (it_start == allNodes.end() || it_end == allNodes.end() || it_start == it_end)
         {
             allFoundYears[i] = 9999;
             pointerPairs.push_back( make_pair(nullptr, nullptr) );
@@ -410,38 +410,82 @@ bool UnionFinder::existPath( ActorNode * actor1, ActorNode * actor2)
     // initialize all prev fields to be nullptr
     for (auto it = allNodes.begin(); it != allNodes.end(); it++)
     { 
-        // note that the edges field
+        // note that 'done' is used for the front-end bfs
+        // while 'dist' is used for the back-end bfs
         (*it)->done = false;
+        (*it)->dist = 0;
     }
 
-    ActorNode * end = actor2;
-    ActorNode * curr = actor1;
+    ActorNode * curr_end = actor2;
+    ActorNode * curr_start = actor1;
 
-    std::queue<ActorNode *> queue;
-    queue.push(curr);
-    while (!queue.empty())
+    // if either the start or end has no outward edge, return false
+    if (curr_end->getFirstEdge() == nullptr || curr_start->getFirstEdge() == nullptr)
     {
-        curr = queue.front();
-        queue.pop();
+        return false;
+    }
 
-        if (curr->done == false)
+    // perform a two-way bfs
+    std::queue<ActorNode *> queue_start;
+    std::queue<ActorNode *> queue_end;
+
+    queue_start.push(curr_start);
+    queue_end.push(curr_end);
+    bool found = false;
+
+    // if either the end or start is empty, this means they are not
+    // in the same completed graph
+    while (!queue_start.empty() && !queue_end.empty())
+    {
+        curr_start = queue_start.front();
+        queue_start.pop();
+        curr_end = queue_end.front();
+        queue_end.pop();
+
+        if (found) break;
+
+        if (curr_start->done == false)
         {
-            curr->done = true;
-            if (curr == end) break;
+            curr_start->done = true;
+            if (curr_start->dist != 0) 
+            {
+                found = true;
+                break;
+            }
 
             // push a bunch of neighbor nodes onto the queue if they are not on the 
             // queue before already
-            std::vector< ActorNode * > neighbors = curr->getNeighbors();
+            std::vector< ActorNode * > neighbors = curr_start->getNeighbors();
             for (int i = 0; i < neighbors.size(); i++)
             {
                 if (!neighbors[i]->done)
                 {
-                    queue.push(neighbors[i]);
+                    queue_start.push(neighbors[i]);
                 }
             }
         }
 
+        if (curr_end->dist == 0)
+        {
+            curr_end->dist = 1;
+            if (curr_end->done)
+            {
+                found = true;
+                break;
+            }
+
+            // push a bunch of neighbor nodes onto the queue if they are not on the 
+            // queue before already
+            std::vector< ActorNode * > neighbors = curr_end->getNeighbors();
+            for (int i = 0; i < neighbors.size(); i++)
+            {
+                if (!neighbors[i]->done)
+                {
+                    queue_end.push(neighbors[i]);
+                }
+            }
+        }
     }
 
-    return end->done;
+    return found;
 }
