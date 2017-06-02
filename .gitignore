@@ -25,6 +25,8 @@
 # TSV files
 *.tsv
 !many_pairs.tsv
+!pair.tsv
+!test_pairs.tsv
 
 # txt files
 *.txt
