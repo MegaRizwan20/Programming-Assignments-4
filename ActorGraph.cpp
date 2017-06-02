@@ -197,7 +197,7 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
             }
 
             // found the path to the end. stop.
-            if (v == end) break;
+            //if (v == end) break;
         }
     }
 
