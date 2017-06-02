@@ -442,8 +442,6 @@ bool UnionFinder::existPath( ActorNode * actor1, ActorNode * actor2)
         curr_end = queue_end.front();
         queue_end.pop();
 
-        if (found) break;
-
         if (curr_start->done == false)
         {
             curr_start->done = true;
@@ -485,6 +483,9 @@ bool UnionFinder::existPath( ActorNode * actor1, ActorNode * actor2)
                 }
             }
         }
+      
+      	if (found)
+          break;
     }
 
     return found;
