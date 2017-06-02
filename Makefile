@@ -14,7 +14,7 @@ else
     LDFLAGS += -g
 endif
 
-all: pathfinder actorconnections
+all: pathfinder actorconnections extension
 
 
 
@@ -23,6 +23,8 @@ all: pathfinder actorconnections
 pathfinder: pathfinder.cpp ActorGraph.o ActorNode.o ActorEdge.o ActorPath.o MovieList.o MovieGraph.o MovieName.o
 
 actorconnections: actorconnections.cpp UnionFinder.o ActorNode.o ActorEdge.o ActorPath.o MovieList.o MovieGraph.o MovieName.o
+
+extension: extension.cpp
 
 # include what ever source code *.h files ActorGraph relies on (these are merely the ones that were used in the solution)
 
