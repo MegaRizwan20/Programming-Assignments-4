@@ -34,5 +34,5 @@
 
 # all binary files should not be committed
 pathfinder
-out
+out*
 empty
