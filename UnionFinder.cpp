@@ -362,6 +362,8 @@ void UnionFinder::bfsAllPairs( std::vector< std::pair< std::string, std::string>
 
     while (it_year != allYears.end() )
     {
+        cout << "computing year: " << *it_year << endl;
+
         // create the disjoint sets of all the movies before the current year
         while (it_graph != movieList.listOfGraphs.end() && (*it_graph)->getMovieYear() == *it_year )
         {
@@ -477,7 +479,7 @@ bool UnionFinder::existPath( ActorNode * actor1, ActorNode * actor2)
             std::vector< ActorNode * > neighbors = curr_end->getNeighbors();
             for (int i = 0; i < neighbors.size(); i++)
             {
-                if (!neighbors[i]->done)
+                if (neighbors[i]->dist == 0)
                 {
                     queue_end.push(neighbors[i]);
                 }
