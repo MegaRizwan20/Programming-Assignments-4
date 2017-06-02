@@ -54,7 +54,7 @@ MovieGraph * MovieList::searchGraph( std::string movieName, int movieYear ) cons
   MovieGraph temp(movieName, movieYear);
   MovieGraph * tempSearch = &temp;
   
-  // Make an iterator to look for graph
+  // Make an iterator to look for graph	
   std::set<MovieGraph*, compareGraphs>::iterator it2;
 
   // Look for the graph
