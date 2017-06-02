@@ -3,7 +3,7 @@
 // Constructor.
 UnionFinder::UnionFinder(void)
 {
-  
+
 }
 
 // Destructor. deallocate all the nodes and moviename instances
@@ -36,7 +36,7 @@ UnionFinder::~UnionFinder()
  */
 bool UnionFinder::loadFromFile(const char* in_filename)
 {
-   // Initialize the file stream
+    // Initialize the file stream
     ifstream infile(in_filename);
 
     bool have_header = false; 
@@ -44,7 +44,7 @@ bool UnionFinder::loadFromFile(const char* in_filename)
     // keep reading lines until the end of file is reached
     while (infile) {
         string s;
-    
+
         // get the next line
         if (!getline( infile, s )) break;
 
@@ -59,13 +59,13 @@ bool UnionFinder::loadFromFile(const char* in_filename)
 
         while (ss) {
             string next;
-      
+
             // get the next string before hitting a tab character and put it in 'next'
             if (!getline( ss, next, '\t' )) break;
 
             record.push_back( next );
         }
-    
+
         if (record.size() != 3) {
             // we should have exactly 3 columns
             continue;
@@ -74,7 +74,7 @@ bool UnionFinder::loadFromFile(const char* in_filename)
         string actor_name(record[0]);
         string movie_title(record[1]);
         int movie_year = stoi(record[2]);
-    
+
         // we have an actor/movie relationship, now see if actor already exists
         ActorNode * tempNode = new ActorNode(actor_name);
         auto pair = allNodes.insert( tempNode );
@@ -106,7 +106,7 @@ void UnionFinder::printStats( ostream& out ) const
 {
     out << "#nodes: " << allNodes.size() << std::endl;
     out << "#movies: " << allMovies.size() << std::endl;
-  
+
     // calculate the number of edges in the case that a graph is constructed
     // since each movieGraph creates a complete graph, which has a total number of edges
     // of n*(n-1), we just need to find the number of edges generated in each movieGraph
@@ -117,29 +117,29 @@ void UnionFinder::printStats( ostream& out ) const
         sum += (*it)->listOfActors.size() * ( (*it)->listOfActors.size() - 1) ;
     }
     out << "#edges: " << sum << std::endl;
-  
-  /* ---------------------------------------------------------------
-  * This is just used to generate a random test pairs file
-  * Need to include fstream, time.h, and stdlib.h for this to work
-  * ----------------------------------------------------------------
-  ofstream file;
-  file.open( "many_pairs.tsv" );
-  file << "actor1\tactor2\n";
-  srand (time(NULL));
-  for (int i = 0; i < 1000; i++)
-  {
-    int random = rand() % allNodes.size();
-    auto it = allNodes.begin();
-    std::advance(it, random);
-   	string actor1 = (*it)->getActorName();
-    
-    random = rand() % allNodes.size();
-    it = allNodes.begin();
-    std::advance(it, random);
-   	string actor2 = (*it)->getActorName();
-    file << actor1 << "\t" << actor2 << "\n" ;
-  }
-  *---------------------------------------------------------------- */
+
+    /* ---------------------------------------------------------------
+     * This is just used to generate a random test pairs file
+     * Need to include fstream, time.h, and stdlib.h for this to work
+     * ----------------------------------------------------------------
+     ofstream file;
+     file.open( "many_pairs.tsv" );
+     file << "actor1\tactor2\n";
+     srand (time(NULL));
+     for (int i = 0; i < 1000; i++)
+     {
+     int random = rand() % allNodes.size();
+     auto it = allNodes.begin();
+     std::advance(it, random);
+     string actor1 = (*it)->getActorName();
+
+     random = rand() % allNodes.size();
+     it = allNodes.begin();
+     std::advance(it, random);
+     string actor2 = (*it)->getActorName();
+     file << actor1 << "\t" << actor2 << "\n" ;
+     }
+     *---------------------------------------------------------------- */
 }
 
 // print all the actor names and the earliest year in which they are connected to the output stream
@@ -150,24 +150,24 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
     std::vector< std::pair< ActorNode *, ActorNode *> > pointerPairs;
     for (int i = 0; i < pairs.size(); i++)
     {
-      	// construct temporary nodes to search its location in the set
+        // construct temporary nodes to search its location in the set
         ActorNode * start = new ActorNode( pairs[i].first );
         ActorNode * end = new ActorNode( pairs[i].second );
         auto it_start = allNodes.find( start );
         auto it_end = allNodes.find( end );
-      
+
         // delete them after getting the iterators
         delete start;
         delete end;
 
-      	// if either name is not in the list, make it 9999 
+        // if either name is not in the list, make it 9999 
         if (it_start == allNodes.end() || it_end == allNodes.end())
         {
             allFoundYears[i] = 9999;
             pointerPairs.push_back( make_pair(nullptr, nullptr) );
         }
-      
-      	// otherwise push the pair of nodes onto the new vector
+
+        // otherwise push the pair of nodes onto the new vector
         // so that we don't need to perform the find operation 
         // repeatedly
         else
@@ -183,11 +183,11 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
     std::set<int> allYears;
     for (int i = 0; i < allMovies.size(); i++)
     {
-      	// a set ensures that no duplicate year is inserted
+        // a set ensures that no duplicate year is inserted
         allYears.insert(allMovies[i]->getYear());
     }
 
-  	// use iterators to keep track of which year and set of nodes
+    // use iterators to keep track of which year and set of nodes
     // should be included in the union operation.
     auto it_year = allYears.begin();
     auto it_graph = movieList.listOfGraphs.begin();
@@ -196,13 +196,13 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
     // initialize all prev fields to be nullptr
     for (auto it = allNodes.begin(); it != allNodes.end(); it++)
     {
-      	// note that prev is used to represent the parent pointer
+        // note that prev is used to represent the parent pointer
         (*it)->prev = nullptr;
-      
-      	// note that the edges field is used to represent the 
+
+        // note that the edges field is used to represent the 
         // edges to the children only (referring to incoming edges
         // in the uptree structure)
-      	(*it)->clearEdges();
+        (*it)->clearEdges();
     }
 
     while (it_year != allYears.end() )
@@ -229,7 +229,7 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
             {
                 for (int i = 0; i < curr->listOfActors.size(); i++)
                 {
-                  	// check if both the parent pointer and child pointers are null
+                    // check if both the parent pointer and child pointers are null
                     if ( curr->listOfActors[i]->prev == nullptr && curr->listOfActors[i]->getFirstEdge() == nullptr)
                     {
                         if ( curr->listOfActors[i] != curr->listOfActors[sentinel] )
@@ -238,7 +238,7 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
                             curr->listOfActors[sentinel]->addEdge(curr->listOfActors[i], curr->getMoviePointer());
                         }
                     }
-                    
+
                     // union with nodes that already belong to another set
                     else
                     {
@@ -264,14 +264,14 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
 
             it_graph++;
         }
-        
+
         // used to check if every single pairs are found already. If yes, break out of main loop
         bool allFound = true;
-      
+
         // for each pair, check if they are already in the same set
         for (int i = 0; i < pairs.size(); i++)
         {
-          	// check only the pairs whose years are still unset (0 by default)
+            // check only the pairs whose years are still unset (0 by default)
             if (allFoundYears[i] == 0)
             {
                 if (pointerPairs[i].first->unionFind(pointerPairs[i].second))
@@ -289,7 +289,7 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
         it_year++;
     }
 
-  	// print the actor names and found years to the output stream that is given as a parameter
+    // print the actor names and found years to the output stream that is given as a parameter
     for (int i = 0; i < allFoundYears.size(); i++)
     {
         // no path is found if the found year for the pair is still 0 at this point
@@ -303,29 +303,29 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
 // a path between a pair of nodes
 void UnionFinder::bfsAllPairs( std::vector< std::pair< std::string, std::string> > pairs, ostream& out )
 {
-      // initialize a vector of found years
+    // initialize a vector of found years
     std::vector<int> allFoundYears( pairs.size(), 0 );
     std::vector< std::pair< ActorNode *, ActorNode *> > pointerPairs;
     for (int i = 0; i < pairs.size(); i++)
     {
-      	// construct temporary nodes to search its location in the set
+        // construct temporary nodes to search its location in the set
         ActorNode * start = new ActorNode( pairs[i].first );
         ActorNode * end = new ActorNode( pairs[i].second );
         auto it_start = allNodes.find( start );
         auto it_end = allNodes.find( end );
-      
+
         // delete them after getting the iterators
         delete start;
         delete end;
 
-      	// if either name is not in the list, make it 9999 
+        // if either name is not in the list, make it 9999 
         if (it_start == allNodes.end() || it_end == allNodes.end())
         {
             allFoundYears[i] = 9999;
             pointerPairs.push_back( make_pair(nullptr, nullptr) );
         }
-      
-      	// otherwise push the pair of nodes onto the new vector
+
+        // otherwise push the pair of nodes onto the new vector
         // so that we don't need to perform the find operation 
         // repeatedly
         else
@@ -341,11 +341,11 @@ void UnionFinder::bfsAllPairs( std::vector< std::pair< std::string, std::string>
     std::set<int> allYears;
     for (int i = 0; i < allMovies.size(); i++)
     {
-      	// a set ensures that no duplicate year is inserted
+        // a set ensures that no duplicate year is inserted
         allYears.insert(allMovies[i]->getYear());
     }
 
-  	// use iterators to keep track of which year and set of nodes
+    // use iterators to keep track of which year and set of nodes
     // should be included in the union operation.
     auto it_year = allYears.begin();
     auto it_graph = movieList.listOfGraphs.begin();
@@ -354,10 +354,10 @@ void UnionFinder::bfsAllPairs( std::vector< std::pair< std::string, std::string>
     // initialize all prev fields to be nullptr
     for (auto it = allNodes.begin(); it != allNodes.end(); it++)
     { 
-      	// note that the edges field is used to represent the 
+        // note that the edges field is used to represent the 
         // edges to the children only (referring to incoming edges
         // in the uptree structure)
-      	(*it)->clearEdges();
+        (*it)->clearEdges();
     }
 
     while (it_year != allYears.end() )
@@ -371,14 +371,14 @@ void UnionFinder::bfsAllPairs( std::vector< std::pair< std::string, std::string>
 
             it_graph++;
         }
-        
+
         // used to check if every single pairs are found already. If yes, break out of main loop
         bool allFound = true;
-      
+
         // for each pair, check if they are already in the same set
         for (int i = 0; i < pairs.size(); i++)
         {
-          	// check only the pairs whose years are still unset (0 by default)
+            // check only the pairs whose years are still unset (0 by default)
             if (allFoundYears[i] == 0)
             {
                 if (existPath( pointerPairs[i].first, pointerPairs[i].second ) )
@@ -394,10 +394,9 @@ void UnionFinder::bfsAllPairs( std::vector< std::pair< std::string, std::string>
         if (allFound) break;
 
         it_year++;
-        cout << "going to the next year: " << *it_year << endl;
     }
 
-  	// print the actor names and found years to the output stream that is given as a parameter
+    // print the actor names and found years to the output stream that is given as a parameter
     for (int i = 0; i < allFoundYears.size(); i++)
     {
         // no path is found if the found year for the pair is still 0 at this point
@@ -408,40 +407,41 @@ void UnionFinder::bfsAllPairs( std::vector< std::pair< std::string, std::string>
 
 bool UnionFinder::existPath( ActorNode * actor1, ActorNode * actor2)
 {
-      // initialize all prev fields to be nullptr
+    // initialize all prev fields to be nullptr
     for (auto it = allNodes.begin(); it != allNodes.end(); it++)
     { 
-      	// note that the edges field is used to represent the 
-        // edges to the children only (referring to incoming edges
-        // in the uptree structure)
-      	(*it)->done = false;
+        // note that the edges field
+        (*it)->done = false;
     }
-  
+
     ActorNode * end = actor2;
-  	ActorNode * curr = actor1;
-    
+    ActorNode * curr = actor1;
+
     std::queue<ActorNode *> queue;
     queue.push(curr);
     while (!queue.empty())
     {
-      curr = queue.front();
-      queue.pop();
-      curr->done = true;
-      if (curr == end) break;
-      cout << "stuck here? " << endl;
-      
-      // push a bunch of neighbor nodes onto the queue if they are not on the 
-      // queue before already
-      std::vector< ActorNode * > neighbors = curr->getNeighbors();
-      for (int i = 0; i < neighbors.size(); i++)
-      {
-       	if (!neighbors[i]->done)
+        curr = queue.front();
+        queue.pop();
+
+        if (curr->done == false)
         {
-          queue.push(curr);
+            curr->done = true;
+            if (curr == end) break;
+
+            // push a bunch of neighbor nodes onto the queue if they are not on the 
+            // queue before already
+            std::vector< ActorNode * > neighbors = curr->getNeighbors();
+            for (int i = 0; i < neighbors.size(); i++)
+            {
+                if (!neighbors[i]->done)
+                {
+                    queue.push(neighbors[i]);
+                }
+            }
         }
-      }
-      
+
     }
-  
+
     return end->done;
 }

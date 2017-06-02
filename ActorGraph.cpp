@@ -148,10 +148,9 @@ ActorPath * ActorGraph::findPath( std::string start_name, std::string end_name )
       return ret;
     }
 
-    if (prevSearch != start || end->prev == nullptr || prevIsBFS == true)
+    if (prevSearch != start || end->prev == nullptr)
     {
         prevSearch = start;
-        prevIsBFS = false;
         // Use the Dijkstra algorithm to find the path
         std::priority_queue< std::pair<int, ActorNode *>, std::vector<std::pair<int, ActorNode *>>, compareInQueue > queue;
         for (auto it = allNodes.begin(); it != allNodes.end(); it++)
