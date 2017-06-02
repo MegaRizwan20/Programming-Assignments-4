@@ -136,14 +136,19 @@ int main (int argc, char* argv[])
     // End of outer while loop 
     }
 
+    UnionFinder ufind;
+    cout << "Loading \"" << argv[1] << "\"..." << flush;
+    ufind.loadFromFile(argv[1]);
+    cout << "done!" << endl;
+    ufind.printStats(cout);
+  
     if (disjoint)
     {
-        UnionFinder ufind;
-        cout << "Loading \"" << argv[1] << "\"..." << flush;
-        ufind.loadFromFile(argv[1]);
-        cout << "done!" << endl;
-        ufind.printStats(cout);
         ufind.printAllYears( listOfPairs, outfile );
+    }
+  	else
+    {
+        ufind.bfsAllPairs( listOfPairs, outfile );
     }
 
   	// if the loop is broken out before eof is reached, exit with failure

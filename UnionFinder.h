@@ -17,6 +17,7 @@
 #include <vector>
 #include <utility>
 #include <set>
+#include <queue>
 
 #include "ActorNode.h"
 #include "ActorEdge.h"
@@ -47,6 +48,9 @@ protected:
     // stores the set of moviegraphs that each act as a disjoint set before they are connected
     MovieList movieList;
    
+   	// helper function to assist in finding a path between two actors to see if there exists a path
+    bool existPath( ActorNode * actor1, ActorNode * actor2 );
+   
 public:
     UnionFinder(void);
     ~UnionFinder();
@@ -66,8 +70,13 @@ public:
     // print the number of nodes, edges and movies in the graph
     void printStats( ostream& out ) const;
 
-    // print all the actor names and the earliest year in which they are connected to the output stream
+    // print all the actor names and the earliest years in which they are connected to the output stream
+    // 	years are found via disjoint set data structure
     void printAllYears( std::vector< std::pair< std::string, std::string> >, ostream& out );
+   
+   	// print all the actor names and the earliest years in which they are connected to the output stream
+    //	years are found via bfs
+    void bfsAllPairs( std::vector< std::pair< std::string, std::string> >, ostream& out );
 };
 
 

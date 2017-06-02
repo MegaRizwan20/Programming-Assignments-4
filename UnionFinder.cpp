@@ -298,3 +298,150 @@ void UnionFinder::printAllYears( std::vector< std::pair< std::string, std::strin
     }
 }
 
+// print all the actor names and the earliest year in which they are connected to the output stream
+// This function uses the 'existPath' function, which is basically using bfs to check if there exists
+// a path between a pair of nodes
+void UnionFinder::bfsAllPairs( std::vector< std::pair< std::string, std::string> > pairs, ostream& out )
+{
+      // initialize a vector of found years
+    std::vector<int> allFoundYears( pairs.size(), 0 );
+    std::vector< std::pair< ActorNode *, ActorNode *> > pointerPairs;
+    for (int i = 0; i < pairs.size(); i++)
+    {
+      	// construct temporary nodes to search its location in the set
+        ActorNode * start = new ActorNode( pairs[i].first );
+        ActorNode * end = new ActorNode( pairs[i].second );
+        auto it_start = allNodes.find( start );
+        auto it_end = allNodes.find( end );
+      
+        // delete them after getting the iterators
+        delete start;
+        delete end;
+
+      	// if either name is not in the list, make it 9999 
+        if (it_start == allNodes.end() || it_end == allNodes.end())
+        {
+            allFoundYears[i] = 9999;
+            pointerPairs.push_back( make_pair(nullptr, nullptr) );
+        }
+      
+      	// otherwise push the pair of nodes onto the new vector
+        // so that we don't need to perform the find operation 
+        // repeatedly
+        else
+        {
+            start = *it_start;
+            end = *it_end;
+            pointerPairs.push_back( make_pair(start, end) );
+        }
+    }
+
+
+    // Preprocess all the years
+    std::set<int> allYears;
+    for (int i = 0; i < allMovies.size(); i++)
+    {
+      	// a set ensures that no duplicate year is inserted
+        allYears.insert(allMovies[i]->getYear());
+    }
+
+  	// use iterators to keep track of which year and set of nodes
+    // should be included in the union operation.
+    auto it_year = allYears.begin();
+    auto it_graph = movieList.listOfGraphs.begin();
+    MovieGraph * curr;
+
+    // initialize all prev fields to be nullptr
+    for (auto it = allNodes.begin(); it != allNodes.end(); it++)
+    { 
+      	// note that the edges field is used to represent the 
+        // edges to the children only (referring to incoming edges
+        // in the uptree structure)
+      	(*it)->clearEdges();
+    }
+
+    while (it_year != allYears.end() )
+    {
+        // create the disjoint sets of all the movies before the current year
+        while (it_graph != movieList.listOfGraphs.end() && (*it_graph)->getMovieYear() == *it_year )
+        {
+            curr = *it_graph;
+
+            curr->makeEdges();
+
+            it_graph++;
+        }
+        
+        // used to check if every single pairs are found already. If yes, break out of main loop
+        bool allFound = true;
+      
+        // for each pair, check if they are already in the same set
+        for (int i = 0; i < pairs.size(); i++)
+        {
+          	// check only the pairs whose years are still unset (0 by default)
+            if (allFoundYears[i] == 0)
+            {
+                if (existPath( pointerPairs[i].first, pointerPairs[i].second ) )
+                {
+                    allFoundYears[i] = *it_year;
+                }
+                else
+                {
+                    allFound = false;
+                }
+            }
+        }
+        if (allFound) break;
+
+        it_year++;
+        cout << "going to the next year: " << *it_year << endl;
+    }
+
+  	// print the actor names and found years to the output stream that is given as a parameter
+    for (int i = 0; i < allFoundYears.size(); i++)
+    {
+        // no path is found if the found year for the pair is still 0 at this point
+        if (allFoundYears[i] == 0) allFoundYears[i] = 9999;
+        out << pairs[i].first << "\t" << pairs[i].second << "\t" << allFoundYears[i] << "\n";
+    }
+}
+
+bool UnionFinder::existPath( ActorNode * actor1, ActorNode * actor2)
+{
+      // initialize all prev fields to be nullptr
+    for (auto it = allNodes.begin(); it != allNodes.end(); it++)
+    { 
+      	// note that the edges field is used to represent the 
+        // edges to the children only (referring to incoming edges
+        // in the uptree structure)
+      	(*it)->done = false;
+    }
+  
+    ActorNode * end = actor2;
+  	ActorNode * curr = actor1;
+    
+    std::queue<ActorNode *> queue;
+    queue.push(curr);
+    while (!queue.empty())
+    {
+      curr = queue.front();
+      queue.pop();
+      curr->done = true;
+      if (curr == end) break;
+      cout << "stuck here? " << endl;
+      
+      // push a bunch of neighbor nodes onto the queue if they are not on the 
+      // queue before already
+      std::vector< ActorNode * > neighbors = curr->getNeighbors();
+      for (int i = 0; i < neighbors.size(); i++)
+      {
+       	if (!neighbors[i]->done)
+        {
+          queue.push(curr);
+        }
+      }
+      
+    }
+  
+    return end->done;
+}

@@ -103,9 +103,6 @@ public:
     // print the number of nodes, edges and movies in the graph
     void printStats( ostream& out ) const;
 
-    // perform a bfs search for the smallest year in which 2 actors are connected
-    int bfsMin( std::string start_name, std::string end_name);
-
 };
 
 

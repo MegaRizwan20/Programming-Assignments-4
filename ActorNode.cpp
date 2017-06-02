@@ -94,18 +94,16 @@ std::vector< std::pair<ActorNode *, int> > ActorNode::getAdjacentNodes(bool weig
     return list;
 }
 
-std::vector< std::pair<ActorNode *, int> > ActorNode::getNodesAndYears() const
+std::vector<ActorNode * > ActorNode::getNeighbors() const
 {
    
-    std::vector< std::pair<ActorNode *, int> > list;
+    std::vector< ActorNode * > list;
     
     // If we are dealing with weighted edges
     for (auto it = edges.begin();
             it != edges.end(); ++it)
     {
-        ActorNode * tempNode = (*it)->getNextNode();
-        int year = (*it)->getMovieName()->getYear();
-        list.push_back( std::make_pair(tempNode, year) );
+        list.push_back( (*it)->getNextNode() );
     }
 
     return list;
