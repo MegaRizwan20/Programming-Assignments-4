@@ -42,13 +42,27 @@ void ActorNode::addEdge( ActorNode * node, MovieName * name )
 // this shouldn't take too long.
 ActorEdge * ActorNode::findEdge( const ActorNode * node ) const
 {
+    int weight = 0;
+    int index = -1;
   	for (int i = 0; i < edges.size(); i++)
     {
       if (edges[i]->getNextNode() == node)
-        return edges[i];
+      {
+        if (weight == 0 || edges[i]->getWeight() < weight)
+        {
+          index = i;
+        }
+      }
     }
   
-  	return nullptr;
+  	if (index == -1)
+    {
+        return nullptr;
+    }
+    else
+    {
+        return edges[index];
+    }
 }
 
 // Check if this actor has the same name as the input
