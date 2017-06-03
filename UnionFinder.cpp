@@ -362,8 +362,6 @@ void UnionFinder::bfsAllPairs( std::vector< std::pair< std::string, std::string>
 
     while (it_year != allYears.end() )
     {
-        cout << "computing year: " << *it_year << endl;
-
         // create the disjoint sets of all the movies before the current year
         while (it_graph != movieList.listOfGraphs.end() && (*it_graph)->getMovieYear() == *it_year )
         {
