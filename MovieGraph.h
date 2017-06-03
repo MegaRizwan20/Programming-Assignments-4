@@ -1,11 +1,10 @@
 /*
  * FileName: MovieGraph.h
  *
- * Authors:
- * Date:
- * CSE Login:
- * Email:
- * PID:
+ * Authors: Rizwan Khan, Yiming Cai
+ * Date: 6/5/17
+ * 
+ * The header file used for MovieGraph.cpp
  */
 
 #ifndef MOVIEGRAPH_H
@@ -18,8 +17,10 @@
 
 using namespace std;
 
+// The union finder class we will be using
 class UnionFinder;
 
+// The movieGraph class 
 class MovieGraph
 {
   friend class UnionFinder;

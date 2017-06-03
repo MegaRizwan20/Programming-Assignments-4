@@ -1,7 +1,7 @@
 /*
  * ActorPath.h
- * Author: <YOUR NAME HERE>
- * Date:   <DATE HERE>
+ * Author: Rizwan Khan, Yiming Cai
+ * Date:   6/5/17
  *
  * This class is meant to be used to generate a user-readable string
  * that displays the path from one node to the other node

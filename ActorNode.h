@@ -1,7 +1,7 @@
 /*
  * ActorNode.h
- * Author: <YOUR NAME HERE>
- * Date:   <DATE HERE>
+ * Author: Rizwan Khan, Yiming Cai
+ * Date:   6/5/17
  *
  * This class is meant to be used to generate a node instance in the graph. 
  * Contains some useful methods and variables for graph traversal.
@@ -26,16 +26,17 @@ class ActorNode{
    
 public:
    
-   	// Constructor, initialize Actor's name and other variables
+    // Constructor, initialize Actor's name and other variables
     ActorNode( std::string actorName );
    
-    // Destructor, probably need to deallocate edges if its allocated on the heap
+    // Destructor, used to deallocate edges on heap
     ~ActorNode();
    
     // Add an edge to the node. Make the edge in this function
-	void addEdge( ActorNode * node, MovieName * name );
+    void addEdge( ActorNode * node, MovieName * name );
 
-   	// Find an edge that connects to a neighbour with this name. If no neighbour with this name exist, return nullptr.
+    // Find an edge that connects to a neighbour with this name. 
+    // If no neighbor with this name exist, return nullptr.
     ActorEdge * findEdge( std::string name ) const;
 
     ActorEdge * findEdge( const ActorNode * node ) const;
@@ -44,16 +45,17 @@ public:
     bool isSameActor( std::string name ) const;
    
     // Return the actor name
-   	std::string getActorName( ) const;
+    std::string getActorName( ) const;
     
     // Return the list of neighbour nodes and the weights
-    std::vector< std::pair<ActorNode *, int> > getAdjacentNodes(bool weighted = false) const;
+    std::vector< std::pair<ActorNode *, int> > 
+                 getAdjacentNodes(bool weighted = false) const;
   
     // Return the list of neighbor nodes ONLY
     std::vector< ActorNode *> getNeighbors() const;
 
-   	// Return the number of edges this node is connected to
-   	int getNumEdges() const;
+    // Return the number of edges this node is connected to
+    int getNumEdges() const;
 
     // Return the first edge in the edges
     ActorEdge * getFirstEdge() const;
@@ -71,7 +73,8 @@ public:
     ActorNode * prev;
     ActorNode * next;
     bool done;
-   
+
+// Used to compare the edges
 private:   
     class compareEdges {
         public:
@@ -82,12 +85,13 @@ private:
             } 
     };
 
-   	// Member variables. Define the name of this actor and which adjacent actors this actor is connected to.
+    // Member variables. Define the name of this actor and which 
+    // adjacent actors this actor is connected to.
     std::string name;
                                                                        
                                                                        
     //std::set< ActorEdge *, compareEdges > edges;
-   	std::vector< ActorEdge * > edges;
+    std::vector< ActorEdge * > edges;
     
 };
    

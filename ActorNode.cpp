@@ -1,7 +1,7 @@
  /*
  * ActorNode.cpp
- * Author: <YOUR NAME HERE>
- * Date:   <DATE HERE>
+ * Author: Rizwan Khan, Yiming Cai
+ * Date:   6/5/17
  *
  * This class is meant to be used to generate a node instance in the graph. 
  * Contains some useful methods and variables for graph traversal.
@@ -19,6 +19,7 @@ ActorNode::ActorNode( std::string actorName )
 // Destructor, probably need to deallocate edges if its allocated on the heap
 ActorNode::~ActorNode()
 {
+    // Used to deallocate the edges
     for (auto it = edges.begin();
         it != edges.end(); ++it)
     {
@@ -26,6 +27,7 @@ ActorNode::~ActorNode()
     }
 }
 
+// Getter for getting how many edges we made
 int ActorNode::getNumEdges() const
 {
 	return edges.size();
@@ -39,15 +41,21 @@ void ActorNode::addEdge( ActorNode * node, MovieName * name )
 }
 
 // This is a sequential search. Since its a pointer comparison,
-// this shouldn't take too long.
+// this shouldn't take too long. This finds the edges that are needed
+// to be found to properly do searches.
 ActorEdge * ActorNode::findEdge( const ActorNode * node ) const
 {
+    // The weight of the movies
     int weight = 0;
+    // The index to get to the movies
     int index = -1;
-  	for (int i = 0; i < edges.size(); i++)
+    // To loop through all the edges that exist
+    for (int i = 0; i < edges.size(); i++)
     {
+      // Check the existence of the edge
       if (edges[i]->getNextNode() == node)
       {
+        // Check conditions to set the indexx
         if (weight == 0 || edges[i]->getWeight() < weight)
         {
           index = i;
@@ -55,10 +63,12 @@ ActorEdge * ActorNode::findEdge( const ActorNode * node ) const
       }
     }
   
-  	if (index == -1)
+    // If the index stayed -1, we return nullptr
+    if (index == -1)
     {
         return nullptr;
     }
+    // Else we return the edges  itself at that index
     else
     {
         return edges[index];
@@ -78,9 +88,10 @@ std::string ActorNode::getActorName( ) const
 }
 
 // Return the list of neighbour nodes and the weights of these edges
-std::vector< std::pair<ActorNode *, int> > ActorNode::getAdjacentNodes(bool weighted /*= false*/) const
+std::vector< std::pair<ActorNode *, int> > 
+                    ActorNode::getAdjacentNodes(bool weighted) const
 {
-   
+   // The vector we will return
     std::vector< std::pair<ActorNode *, int> > list;
     
     // If we are dealing with weighted edges
@@ -94,6 +105,7 @@ std::vector< std::pair<ActorNode *, int> > ActorNode::getAdjacentNodes(bool weig
             list.push_back( std::make_pair(tempNode, weight) );
         }
     }
+    // Else it is unweighted
     else
     {
         for (auto it = edges.begin();
@@ -105,12 +117,14 @@ std::vector< std::pair<ActorNode *, int> > ActorNode::getAdjacentNodes(bool weig
 
     }
 
+    // Return the list
     return list;
 }
 
+// Used to get the neighbors of the nodes, so we return a list of them
 std::vector<ActorNode * > ActorNode::getNeighbors() const
 {
-   
+    // The list we will return
     std::vector< ActorNode * > list;
     
     // If we are dealing with weighted edges
@@ -123,19 +137,26 @@ std::vector<ActorNode * > ActorNode::getNeighbors() const
     return list;
 }
 
+// Wanting to get the very first edge
 ActorEdge * ActorNode::getFirstEdge() const 
 {
+    // If there are no edges, return nullptr, else
+    // return what is in the first index
     if (edges.size() == 0) return nullptr;
     return edges[0];
 }
 
+
+// Calling the union function to find the sets that
+// exist
 bool ActorNode::unionFind( ActorNode * ufind )
 {
+    // Initialize the actor nodes needed to do union finding
     ActorNode * this_set = this;
     ActorNode * u_set = ufind;
   
-  	// stacks for implementing path compression
-  	std::stack<ActorNode *> st;
+    // stacks for implementing path compression
+    std::stack<ActorNode *> st;
      
     // find the sentinel node of this_set
     while (this_set->prev != nullptr)
@@ -169,8 +190,10 @@ bool ActorNode::unionFind( ActorNode * ufind )
     return this_set == u_set;
 }
 
+// This method actually joins the union sets together
 void ActorNode::unionWith( ActorNode * ufind, MovieName * p_name) 
 {
+    // Initialize the actor nodes
     ActorNode * this_set = this;
     ActorNode * u_set = ufind;
      
@@ -225,6 +248,8 @@ void ActorNode::unionWith( ActorNode * ufind, MovieName * p_name)
     }
 }
 
+// This is used to get rid of all the edges that exist so we do not have
+// memory leaks after running the code
 void ActorNode::clearEdges()
 {
     for (auto it = edges.begin();
