@@ -1,4 +1,9 @@
-// FILE HEADER HERE
+/*
+ * Author: Rizwan Khan, Yiming Cai
+ * Date: 6/5/17
+ *
+ * This finds the connections the actors all have with each other
+ */
 
 #include <fstream>
 #include <iostream>
@@ -19,7 +24,7 @@ using namespace std;
 int main (int argc, char* argv[])
 {
     // Make sure to add all the user input error parsings here
-  	if (argc != 5 && argc!= 4)
+    if (argc != 5 && argc!= 4)
     {
       std::cerr << "Incorrect number of inputs!" << std::endl;
       std::cerr << USAGE;
@@ -30,22 +35,24 @@ int main (int argc, char* argv[])
     errno = 0;
     ifstream inFile;
     inFile.open( argv[1] );
+    // Error Checking
     if (errno != 0 || !inFile.is_open())
     {
         cerr << "Error: " << strerror(errno) << endl;
         cerr << USAGE;
         return -1;
     }
-  	inFile.close();
+    inFile.close();
   	
-  	inFile.open(argv[2]);
+    inFile.open(argv[2]);
+    // More error checking
     if (errno != 0 || !inFile.is_open())
     {
         cerr << "Error: " << strerror(errno) << endl;
         cerr << USAGE;
         return -1;
     }
-  	inFile.close();
+    inFile.close();
   
     ofstream outFile;
     outFile.open( argv[3] );
@@ -56,7 +63,7 @@ int main (int argc, char* argv[])
         return -1;
     }
   
-  	// check weight input
+    // check weight input
     bool disjoint;
     if (argc == 5)
     {
@@ -80,7 +87,7 @@ int main (int argc, char* argv[])
         disjoint = true;
     }
 
-  	// initialize pair input and output files
+    // initialize pair input and output files
     ifstream infile(argv[2]);
     ofstream outfile(argv[3]);
 

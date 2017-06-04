@@ -1,10 +1,11 @@
 /*
  * UnionFinder.h
- * Author: <YOUR NAME HERE>
- * Date:   <DATE HERE>
+ * Author: Rizwan Khan
+ * Date:   6/5/17
  *
- * This file is meant to exist as a container for starter code that you can use to read the input file format
- * defined in movie_casts.tsv. Feel free to modify any/all aspects as you wish.
+ * This file is meant to exist as a container for starter code that 
+ * you can use to read the input file format defined in movie_casts.tsv. 
+ * Feel free to modify any/all aspects as you wish.
  */
 
 #ifndef UNIONFINDER_H
@@ -37,18 +38,20 @@ class UnionFinder {
 protected:
   
 
-    // This defines a set of pairs, each containing a node (the starting node) and the set of
-    // found paths.
+    // This defines a set of pairs, each containing a node (the starting node)
+    // and the set of found paths.
     std::set< ActorNode *, compareNodes> allNodes;
 
-    // Stores the list of pointers of all MovieName instances constructed. This is to ensure that
-    // the MovieName instances get deleted once and once only
+    // Stores the list of pointers of all MovieName instances constructed. 
+    // This is to ensure that the MovieName instances get deleted once and once only
     std::vector< MovieName *> allMovies;
 
-    // stores the set of moviegraphs that each act as a disjoint set before they are connected
+    // stores the set of moviegraphs that each act as a disjoint set 
+    // before they are connected
     MovieList movieList;
    
-   	// helper function to assist in finding a path between two actors to see if there exists a path
+    // helper function to assist in finding a path between two actors 
+    // to see if there exists a path
     bool existPath( ActorNode * actor1, ActorNode * actor2 );
    
 public:
@@ -70,12 +73,13 @@ public:
     // print the number of nodes, edges and movies in the graph
     void printStats( ostream& out ) const;
 
-    // print all the actor names and the earliest years in which they are connected to the output stream
-    // 	years are found via disjoint set data structure
+    // print all the actor names and the earliest years in which they are 
+    // connected to the output stream years are found via disjoint set data 
+    // structure
     void printAllYears( std::vector< std::pair< std::string, std::string> >, ostream& out );
    
-   	// print all the actor names and the earliest years in which they are connected to the output stream
-    //	years are found via bfs
+    // print all the actor names and the earliest years in which they are
+    // connected to the output stream years are found via bfs
     void bfsAllPairs( std::vector< std::pair< std::string, std::string> >, ostream& out );
 };
 

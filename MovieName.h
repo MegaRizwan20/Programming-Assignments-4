@@ -1,11 +1,10 @@
 /*
  * FileName: MovieName.h
  *
- * Authors:
- * Date:
- * CSE Login:
- * Email:
- * PID:
+ * Authors: Rizwan Khan, Yiming Cai
+ * Date: 6/5/17
+ * 
+ * The header file for MovieName.cpp
  */
 
 
@@ -16,8 +15,10 @@
 
 using namespace std;
 
+// The MovieName class
 class MovieName
 {
+  // The data that can only be accessed by MovieName.cpp
   private:
   
   	int year;
@@ -54,14 +55,6 @@ class MovieName
      */
     int getWeight() const;
 
-    /**
-     * Comparing the movie name that we get to another movie name and seeing
-     * which one is greater.
-     */
-    //bool operator> (const MovieName& movie) const;
-
-
-    // ALL OTHER NECESSARY HELPER FUNCTIONS BELOW HERE
 };
 
 #endif // MOVIENAME_H

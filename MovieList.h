@@ -1,7 +1,7 @@
 /*
  * MovieList.h
- * Author: <YOUR NAME HERE>
- * Date:   <DATE HERE>
+ * Author: Rizwan Khan, Yiming Cai
+ * Date:   6/5/17
  *
  * This class is meant to be used to store a list of MovieGraphs and
  * add ActorNode pointers to the appropriate graphs

@@ -1,16 +1,18 @@
 /*
  * FileName: MovieGraph.h
  *
- * Authors:
- * Date:
- * CSE Login:
- * Email:
- * PID:
+ * Authors: Rizwan Khan, Yiming Cai
+ * Date: 6/5/17
+ *
+ * This class is used to generate the graphs of all the movies
  */
 #include "MovieGraph.h"
 
+// This creates the edges between the movies
 void MovieGraph::makeEdges() 
 {
+    // We loop through all the actors and if they are not the same
+    // we make an edge
     for (int i = 0; i < listOfActors.size(); i++)
     {
         for (int j = 0; j < listOfActors.size(); j++)
@@ -27,13 +29,7 @@ void MovieGraph::makeEdges()
 // The constructor
 MovieGraph::MovieGraph(string movieNames, int year)
 {
-  // Should set the name of the movie name equal to the movieNames
-  //name->movieName = movieNames;
-  //name->getName(movieNames);
-  // Should set the years for the movie name
-  //name->year= year;
-  //name->getYear(year);
-
+  // Getting the name and list of actors of the movies
   name = new MovieName(movieNames, year);
   listOfActors = vector<ActorNode *>();
 }
@@ -58,8 +54,6 @@ void MovieGraph::addActors(ActorNode * actor)
  */
 string MovieGraph::getMovieName() const
 {
-  //return name->movieName;
-  //name->getName(movieNames);
   // Make a temporary string to return the data
   string tempString;
 
@@ -73,9 +67,7 @@ string MovieGraph::getMovieName() const
  */
 int MovieGraph::getMovieYear() const
 {
-  //return name->year;
-  //name->getYear(year);
-  // Make a temporary storage 
+  // Temporary integer to get the year of the movie
   int tempInt;
 
   // Get the year
@@ -84,13 +76,13 @@ int MovieGraph::getMovieYear() const
 }
 
 // Get the MovieName instance 
-// (don't get confused with getMovieName(), which returns a string)
 MovieName * MovieGraph::getMoviePointer() const
 {
   // This should return the MovieName instance we made called name
   return name;
 }
 
+// Delete the MovieName Instance
 void MovieGraph::deleteMovieName()
 {
 	delete name; 

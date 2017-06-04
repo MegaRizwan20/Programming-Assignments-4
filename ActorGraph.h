@@ -1,10 +1,11 @@
 /*
  * ActorGraph.h
- * Author: <YOUR NAME HERE>
- * Date:   <DATE HERE>
+ * Author: Rizwan Khan, Yiming Cai
+ * Date:   6/5/17
  *
- * This file is meant to exist as a container for starter code that you can use to read the input file format
- * defined in movie_casts.tsv. Feel free to modify any/all aspects as you wish.
+ * This file is meant to exist as a container for starter code that you can use 
+ * to read the input file format defined in movie_casts.tsv. Feel free to 
+ * modify any/all aspects as you wish.
  */
 
 #ifndef ACTORGRAPH_H
@@ -30,6 +31,7 @@
 
 using namespace std;
 
+// Operating overloading for comparing the nodea
 class compareNodes {
 public:
     bool operator() ( ActorNode * lhs, ActorNode * rhs ) const
@@ -38,6 +40,7 @@ public:
     }
 };
 
+// Operator overloading for comparing the paths
 class comparePaths {
 public:
     bool operator() ( ActorPath lhs, ActorPath rhs ) const
@@ -46,17 +49,21 @@ public:
     }
 };
 
+// Operator overloading for how things go into the queue
 class compareInQueue {
 public:
-    bool operator() ( std::pair<int, ActorNode *> lhs, std::pair<int, ActorNode *> rhs) const
+    bool operator() ( std::pair<int, ActorNode *> lhs, 
+                      std::pair<int, ActorNode *> rhs) const
     {
         return lhs.first > rhs.first;
     }
 };
 
+// Operator overloading for comparing the years
 class compareYears {
 public:
-    bool operator() ( std::pair<ActorNode *, int> lhs, std::pair<ActorNode *, int> rhs ) const
+    bool operator() ( std::pair<ActorNode *, int> lhs, 
+                      std::pair<ActorNode *, int> rhs ) const
     {
         return lhs.second > rhs.second;
     }

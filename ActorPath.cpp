@@ -1,7 +1,7 @@
 /*
  * ActorPath.cpp
- * Author: <YOUR NAME HERE>
- * Date:   <DATE HERE>
+ * Author: Rizwan Khan, Yiming Cai
+ * Date:   6/5/17
  *
  * This class is meant to be used to generate a user-readable string
  * that displays the path from one node to the other node
@@ -30,33 +30,35 @@ void ActorPath::addEdge( ActorEdge * edge )
 // print the path to the user
 void ActorPath::printPath( ostream& out ) const
 {
+    // Vector to store the edges
     std::vector<ActorEdge *> edges = getEdges();
-    //cout << " money " << endl;
+    // Prints out to the file
     out << "(" << getStartNode()->getActorName() << ")";
-    //cout << "Computing path for (" <<getStartNode()->getActorName() << ") -> ("
-    //                << edges[i]->getNextNode()->getActorName() << ")" << endl;
+    // Loop through the edges to print out the proper path taken between
+    // actors
     for (int i = 0; i < edges.size(); i++)
     {
+        // The movie and the year of the movie
         std::string movie;
-      	int year;
-        //cout << "Computing path for (" <<getStartNode()->getActorName() << 
-        //") -> ("<< edges[i]->getNextNode()->getActorName() << ")" << endl;
-
+      	int year; 
+        // Get the name and year of movie to print it
         edges[i]->getMovieName()->getName(movie);
         edges[i]->getMovieName()->getYear(year);
         out << "--[" << movie << "#@" << year << "]-->" << "(" << 
                                edges[i]->getNextNode()->getActorName()<< ")";
     }
-  	out << std::endl;
+    out << std::endl;
 }
 
 // check if the path starts and ends at these input nodes
 bool ActorPath::checkStartAndEnd( ActorNode * p_start, ActorNode * p_end) const
 {
+    // If paths are where they should be, return true
     if (p_start == getStartNode() && p_end == getEndNode())
     {
         return true;
     }
+    // Else return false
     else
     {
         return false;
@@ -75,6 +77,7 @@ ActorNode * ActorPath::getEndNode() const
     return linkedEdges[ linkedEdges.size() -1 ]->getNextNode();
 }
 
+// Return the edges
 std::vector<ActorEdge *> ActorPath::getEdges() const
 {
     return linkedEdges;

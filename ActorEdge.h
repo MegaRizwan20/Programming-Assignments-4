@@ -1,7 +1,7 @@
 /*
  * ActorEdge.h
- * Author: <YOUR NAME HERE>
- * Date:   <DATE HERE>
+ * Author: Rizwan Khan, Yiming Cai
+ * Date:   6/5/17
  *
  * This class is meant to be used to generate an edge instance in the graph. 
  * Contains some useful methods and variables for graph traversal.
