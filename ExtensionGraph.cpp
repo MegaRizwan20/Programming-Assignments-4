@@ -1,26 +1,26 @@
 /*
- * ActorGraph.cpp
- * Author: Rizwan Khan, Yiming Cai
- * Date:   6/5/17
+ * ExtensionGraph.cpp
+ * Author: <YOUR NAME HERE>
+ * Date:   <DATE HERE>
  *
  * This file is meant to exist as a container for starter code that you can use 
  * to read the input file format defined in movie_casts.tsv. Feel free to 
  * modify any/all aspects as you wish.
  */
 
-#include "ActorGraph.h"
+#include "ExtensionGraph.h"
 
 using namespace std;
 
 // We call the constructor
-ActorGraph::ActorGraph(void) 
+ExtensionGraph::ExtensionGraph(void)
 {
     // Set what we searched for before as nullptr
     prevSearch = nullptr;
 }
 
 // The destructor the deallocate all the data we allocated on the heap
-ActorGraph::~ActorGraph() 
+ExtensionGraph::~ExtensionGraph() 
 {
     // Delete all the movies in the vector
     for (int i = 0; i < allMovies.size(); i++)
@@ -31,7 +31,7 @@ ActorGraph::~ActorGraph()
     // Delete all the iterators
     for (auto it = allNodes.begin(); it != allNodes.end(); it++)
     {
-        delete *it;
+        delete (*it).first;
     }
 }
 
@@ -39,14 +39,14 @@ ActorGraph::~ActorGraph()
  * were made, number of movies in the graph and how many edges connecct the
  * movies
  */
-void ActorGraph::printStats( ostream& out ) const
+void ExtensionGraph::printStats( ostream& out ) const
 {
     out << "#nodes: " << allNodes.size() << std::endl;
     out << "#movies: " << allMovies.size() << std::endl;
     int sum = 0;
     for (auto it = allNodes.begin(); it != allNodes.end(); it++)
     {
-      sum += (*it)->getNumEdges();
+      sum += ((*it).first)->getNumEdges();
     }
   	
   	// uncomment if you want to get the number of undirected edges
@@ -56,7 +56,7 @@ void ActorGraph::printStats( ostream& out ) const
 }
 
 // This function will initialize the graph, along with all the nodes, edges and movienames
-bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
+bool ExtensionGraph::loadFromFile(const char* in_filename) 
 {
     // Initialize the file stream
     ifstream infile(in_filename);
@@ -85,31 +85,44 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges)
             string next;
       
             // get the next string before hitting a tab character and put it in 'next'
-            if (!getline( ss, next, '\t' )) break;
+            //if (!getline( ss, next, '\t' )) break;
+            // Should read in the comma character and put it in next
+            if (!getline( ss, next, ',')) break;
 
             record.push_back( next );
         }
     
-        if (record.size() != 3) {
+        if (record.size() != 9) {
             // we should have exactly 3 columns
             continue;
         }
 
-        string actor_name(record[0]);
-        string movie_title(record[1]);
-        int movie_year = stoi(record[2]);
+        // Title name
+        string title_name(record[0]);
+        // Name of studio
+        string studio_name(record[7]);
+        // Get the gross income of the anime
+        double gross_income = stod(record[6], nullptr);
+        //string movie_title(record[1]);
+        // Year of title
+        int anime_year = stoi(record[1]);
     
         // we have an actor/movie relationship, now see if actor already exists
-        ActorNode * tempNode = new ActorNode(actor_name);
-        auto pair = allNodes.insert( tempNode );
+        //ActorNode * tempNode = new ActorNode(actor_name);
+        // This should give a title/studio/income relationship, then check
+        // existence
+        ActorNode * tempNode = new ActorNode(title_name);
+        auto pair = allNodes.insert( std::make_pair(tempNode, gross_income) );
 
-        // if it does not exist
+        // if it exists
         if (!pair.second)
         {
             delete tempNode;
         }
 
-        movieList.addActorNode( *(pair.first), movie_title, movie_year );
+        //movieList.addActorNode( *(pair.first), movie_title, movie_year );
+        movieList.addActorNode( (*(pair.first)).first, studio_name, 0 );
+	movieList.addActorNode( (*(pair.first)).first, "", anime_year) ;
     }
 
     if (!infile.eof()) {
@@ -121,7 +134,6 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges)
     // Initialize all edges, and other member variables of the graph
     movieList.makeAllEdges();
     allMovies = movieList.getAllMovieNames();
-    weighted = use_weighted_edges;
 
     return true;
 }
@@ -130,7 +142,7 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges)
 // Depending on the implementation of this class, the caller might have
 // to manually deallocate the returned pointer to prevent leaks.
 // Return null if the start_name or end_name is not in the graph
-ActorPath * ActorGraph::findPath(std::string start_name, std::string end_name)
+ActorPath * ExtensionGraph::findPath(std::string start_name, std::string end_name)
 {
     // Initialize a new actor Node for the start
     ActorNode * start = new ActorNode(start_name);
@@ -143,9 +155,9 @@ ActorPath * ActorGraph::findPath(std::string start_name, std::string end_name)
     // Used to get the weight of the actors
     int weight;
     // Where we start iterating through the graph
-    auto it_start = allNodes.find( start );
+    auto it_start = allNodes.find( std::make_pair(start, 0) );
     // Iterator used to find the end of the graph
-    auto it_end = allNodes.find( end );
+    auto it_end = allNodes.find( std::make_pair(end, 0) );
     // Delete the memory allocated so no memory leaks, but we still use the
     // nodes themselves
     delete start;
@@ -158,8 +170,8 @@ ActorPath * ActorGraph::findPath(std::string start_name, std::string end_name)
         return nullptr;
     }
 
-    start = *it_start;
-    end = *it_end;
+    start = (*it_start).first;
+    end = (*it_end).first;
     ActorPath * ret = new ActorPath(start);
 
     // Path is already complete if the start and end nodes are the same
@@ -180,7 +192,7 @@ ActorPath * ActorGraph::findPath(std::string start_name, std::string end_name)
         // djikstra's algorithm.
         for (auto it = allNodes.begin(); it != allNodes.end(); it++)
         {
-            v = *it;
+            v = (*it).first;
             v->dist = INT_MAX;
             v->prev = nullptr;
             v->done = false;
@@ -208,7 +220,7 @@ ActorPath * ActorGraph::findPath(std::string start_name, std::string end_name)
                 v->done = true;
                 
                 // IMPORTANT: put "true" in this parameter to make the edges weighted
-                neighbors = v->getAdjacentNodes(weighted);
+                neighbors = v->getAdjacentNodes(false);
 
                 // This is to add all the neighboring nodes that will be needed 
                 for (int i = 0; i < neighbors.size(); i++)
