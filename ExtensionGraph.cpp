@@ -102,7 +102,7 @@ bool ExtensionGraph::loadFromFile(const char* in_filename)
         // Name of studio
         string studio_name(record[7]);
         // Get the gross income of the anime
-        double gross_income = stod(record[6], nullptr);
+        double gross_income = stod(record[6].substr(2,record[6].length()-1), nullptr);
         //string movie_title(record[1]);
         // Year of title
         int anime_year = stoi(record[1]);
@@ -122,7 +122,7 @@ bool ExtensionGraph::loadFromFile(const char* in_filename)
 
         //movieList.addActorNode( *(pair.first), movie_title, movie_year );
         movieList.addActorNode( (*(pair.first)).first, studio_name, 0 );
-	movieList.addActorNode( (*(pair.first)).first, "", anime_year) ;
+		movieList.addActorNode( (*(pair.first)).first, "", anime_year) ;
     }
 
     if (!infile.eof()) {

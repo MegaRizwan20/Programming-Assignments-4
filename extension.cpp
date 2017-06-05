@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string.h>
 #include <errno.h>
+#include <math.h>
 
 #include "ExtensionGraph.h"
 #include "ExtensionGraph.h"
@@ -93,14 +94,14 @@ int main (int argc, char* argv[])
     cout << "done!" << endl;
   	
   	// initialize pair input and output files
-    ifstream infile(argv[3]);
-    ofstream outfile(argv[4]);
+    ifstream infile(argv[2]);
+    ofstream outfile(argv[3]);
 
     // WHERE TWO COLUMN READING
     bool header_check = false;
 
     // output file header;
-    outfile << "(actor)--[movie#@year]-->(actor)--..." << endl;
+    outfile << "anime1,anime2,average,standard deviation" << endl;
   
     // Read lines until we reach the end of the file
     while (infile)
@@ -152,9 +153,30 @@ int main (int argc, char* argv[])
       }
       else
       {
-        cout<<"Computing path for ("<<actor1<<") -> (" <<actor2<< ")" <<endl;
-
-        twoActors->printPath(outfile);
+        cout<<"Computer average and SD for ("<<actor1<<") -> (" <<actor2<< ")" <<endl;
+		vector<double> incomes;
+        incomes.push_back( graph.findIncome( twoActors->getStartNode() ) );
+        vector<ActorEdge *> edges = twoActors->getEdges();
+        for (int i = 0; i < edges.size(); i++)
+        {
+            incomes.push_back( graph.findIncome( edges[i]->getNextNode() ) );
+        }
+        double sum = 0;
+        double average;
+        double sd;
+        for (int i = 0; i < incomes.size(); i++)
+        {
+            sum += incomes[i];
+        }
+        average = sum/ ((double) incomes.size());
+        sum = 0;
+        for (int i = 0; i < incomes.size(); i++)
+        {
+          sum += (pow( (average - incomes[i]), 2)) / ((double) incomes.size());
+        }
+        sd = sqrt(sum);
+        
+        outfile << actor1 << "," << actor2 << "," << average << "," << sd << endl;
         delete twoActors;
       }
     // End of outer while loop 
