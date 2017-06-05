@@ -1,4 +1,10 @@
-// FILE HEADER HERE
+/*
+ * Authors: Rizwan Khan, Yiming Cai
+ * Date: 6/5/17
+ *
+ * This is the main executable program that runs the code to make the graph
+ * and obtain the information on the paths to the graph
+ */
 
 #include <fstream>
 #include <iostream>
@@ -14,12 +20,10 @@
 #define USAGE "Usage: ./pathfinder 3_column_file.tsv u/w 2_column_file.tsv output_file\n" 
 using namespace std;
 
-// for temporary testing
-//int main()
 int main (int argc, char* argv[])
 {
     // Make sure to add all the user input error parsings here
-  	if (argc != 5)
+    if (argc != 5)
     {
       std::cerr << "Incorrect number of inputs!" << std::endl;
       std::cerr << USAGE;
@@ -55,7 +59,7 @@ int main (int argc, char* argv[])
         cerr << USAGE;
         return -1;
     }
-
+    // Finished checking if all input is correct
     // initiate graph
     ActorGraph graph;
     ActorPath* twoActors;
@@ -142,25 +146,20 @@ int main (int argc, char* argv[])
       twoActors = graph.findPath(actor1, actor2);
       if (twoActors == nullptr)
       {
-        cerr << " Path is not found for the pair (" << actor1 << ") -> (" << actor2 << ")" <<endl;
+        cerr << " Path is not found for the pair (" << actor1 << ") -> (" << 
+                                                         actor2 << ")" <<endl;
       }
       else
       {
-        cout << "Computing path for (" << actor1 << ") -> (" << actor2 << ")" <<endl;
-        
-        /* delete the following code after bfsmin code is correctly implemented */
-        /* -------------------------------------------------------------------- */
-        //int year = graph.bfsMin( actor1, actor2 );
-        //cout << "Found year is: " << year << endl;
-        /* -------------------------------------------------------------------- */
-        
+        cout<<"Computing path for ("<<actor1<<") -> (" <<actor2<< ")" <<endl;    
+
         twoActors->printPath(outfile);
         delete twoActors;
       }
     // End of outer while loop 
     }
 
-  	// if the loop is broken out before eof is reached, exit with failure
+    // if the loop is broken out before eof is reached, exit with failure
     if (!infile.eof())
     {
       cerr << "Failed to read " << argv[3] << "!\n";

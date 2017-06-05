@@ -280,4 +280,14 @@ ActorPath * ExtensionGraph::findPath(std::string start_name, std::string end_nam
     return ret;
 }
 
+double ExtensionGraph::findIncome( ActorNode * node ) const
+{
+    auto it = allNodes.find( make_pair(node, 0) );
+    if (it != allNodes.end() )
+    {
+        return (*it).second;
+    }
+    else return -1;
+}
+
 

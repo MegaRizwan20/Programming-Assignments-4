@@ -115,6 +115,8 @@ public:
     // print the number of nodes, edges and movies in the graph
     void printStats( ostream& out ) const;
 
+    double findIncome( ActorNode * bla) const;
+
 };
 
 
